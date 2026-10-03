@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Consultorio Pineda | Gestión Dental Profesional</title>
+    <link rel="icon" type="image/png" href="favicon.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -21,7 +22,6 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-20 items-center">
                 <div class="flex-shrink-0 flex items-center gap-2">
-                    <!-- CORRECCIÓN DEL LOGO AQUÍ -->
                     <img src="image_a55d46.jpg.png" alt="Logo Consultorio Pineda" class="h-14 w-auto object-contain">
                 </div>
                 <button onclick="toggleModal('loginModal')" class="text-pineda-navy hover:text-pineda-cyan font-semibold px-4 py-2 rounded-md transition-colors flex items-center gap-2">
@@ -134,13 +134,11 @@
             </div>
             <div class="px-8 pb-8">
                 <div class="text-center mb-8 flex flex-col items-center">
-                    <!-- CORRECCIÓN DEL LOGO AQUÍ -->
                     <img src="image_a55d46.jpg.png" alt="Logo Consultorio Pineda" class="h-16 mb-4 object-contain">
                     <h2 class="text-2xl font-bold text-pineda-navy">Acceso a Personal</h2>
                     <p class="text-slate-500 text-sm mt-1">Dentistas y Super Administrador</p>
                 </div>
                 
-                <!-- VALIDACIÓN DE USUARIO Y CONTRASEÑA -->
                 <form onsubmit="validarLogin(event)">
                     <div class="space-y-5">
                         <div>
@@ -196,21 +194,16 @@
             document.getElementById('bookingForm').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }
 
-        // NUEVA FUNCIÓN PARA VALIDAR EL LOGIN
         function validarLogin(event) {
-            event.preventDefault(); // Evita que la página se recargue
+            event.preventDefault();
 
             const user = document.getElementById('username').value.trim();
             const pass = document.getElementById('password').value;
 
-            // Verificamos si las credenciales coinciden con las solicitadas
             if ((user === 'mario.ortiz' && pass === '12345678') || 
                 (user === 'kevin.pineda' && pass === '12345678')) {
-                
-                // Si coinciden, mandamos al panel de administrador
                 window.location.href = 'admin.html';
             } else {
-                // Si no, mostramos un error
                 alert('Usuario o contraseña incorrectos.');
             }
         }
