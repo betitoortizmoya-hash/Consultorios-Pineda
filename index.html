@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Consultorio Pineda | Gestión Dental Profesional</title>
-    <link rel="icon" type="image/png" href="favicon.png?v=5">
+    <link rel="icon" type="image/png" href="favicon.png?v=6">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -124,7 +124,7 @@
     <!-- SCRIPT DE FIREBASE -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
-        import { getFirestore, collection, getDocs, doc, updateDoc, query, where } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-firestore.js";
+        import { getFirestore, collection, getDocs, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyCSvx5Ra5FMtOyfGQCLMUwthGnLXiQE5Ts",
@@ -157,11 +157,10 @@
 
                 querySnapshot.forEach((documento) => {
                     let datos = documento.data();
-                    datos.id = documento.id; // Guardar el ID único de la nube
+                    datos.id = documento.id;
                     window.listaDentistas.push(datos);
                 });
 
-                // Renderizar las tarjetas
                 window.listaDentistas.forEach((dentista, index) => {
                     let visualPerfil = dentista.fotoPerfil 
                         ? `<img src="${dentista.fotoPerfil}" class="w-full h-64 object-cover object-top group-hover:scale-105 transition-transform duration-300">`
@@ -268,7 +267,6 @@
             const servicioNombre = servicioRadio.getAttribute('data-nombre');
             const dentista = window.listaDentistas[window.dentistaSeleccionadoIndex];
 
-            // Preparamos la solicitud
             let solicitudesActuales = dentista.solicitudes || [];
             solicitudesActuales.push({
                 id: Date.now(),
@@ -280,7 +278,6 @@
             });
 
             try {
-                // Actualizamos directo en la base de datos de Firebase
                 await updateDoc(doc(db, "dentistas", dentista.id), {
                     solicitudes: solicitudesActuales
                 });
@@ -304,27 +301,35 @@
             btn.innerText = "Verificando...";
             btn.disabled = true;
 
-            const user = document.getElementById('username').value.trim();
-            const pass = document.getElementById('password').value;
+            // Limpiamos minúsculas y espacios para evitar errores tontos al teclear
+            const user = document.getElementById('username').value.trim().toLowerCase();
+            const pass = document.getElementById('password').value.trim();
 
-            // Validación de Super Administrador
             if ((user === 'mario.ortiz' && pass === '12345678') || (user === 'kevin.pineda' && pass === '12345678')) {
                 window.location.href = 'admin.html';
                 return;
             }
 
-            // Búsqueda en la nube (Firestore) para dentistas
             try {
-                const q = query(collection(db, "dentistas"), where("correo", "==", user), where("password", "==", pass));
-                const querySnapshot = await getDocs(q);
+                const querySnapshot = await getDocs(collection(db, "dentistas"));
+                let idEncontrado = null;
 
-                if (!querySnapshot.empty) {
-                    // Extraemos el ID del documento en Firestore
-                    const docId = querySnapshot.docs[0].id;
-                    sessionStorage.setItem('dentistaId', docId); // Lo guardamos temporalmente para la sesión
+                querySnapshot.forEach((documento) => {
+                    const datosBD = documento.data();
+                    const correoBD = (datosBD.correo || "").trim().toLowerCase();
+                    const passBD = (datosBD.password || "").trim();
+
+                    if (correoBD === user && passBD === pass) {
+                        idEncontrado = documento.id;
+                    }
+                });
+
+                if (idEncontrado) {
+                    // Usamos localStorage que es mucho más seguro para evitar que te saque
+                    localStorage.setItem('pineda_dentista_id', idEncontrado);
                     window.location.href = 'panel_dentista.html';
                 } else {
-                    alert('Usuario o contraseña incorrectos.');
+                    alert('Usuario o contraseña incorrectos. Verifica tus credenciales.');
                     btn.innerText = "Ingresar";
                     btn.disabled = false;
                 }
@@ -336,7 +341,6 @@
             }
         };
 
-        // Arrancar
         document.addEventListener('DOMContentLoaded', window.cargarDentistasPublicos);
     </script>
 </body>
