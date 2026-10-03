@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Consultorio Pineda | Gestión Dental Profesional</title>
-    <link rel="icon" type="image/png" href="favicon.png">
+    <!-- El parámetro ?v=2 fuerza al navegador a cargar el nuevo ícono -->
+    <link rel="icon" type="image/png" href="favicon.png?v=2">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -17,7 +18,6 @@
 </head>
 <body class="bg-slate-50 font-sans text-slate-800 antialiased">
 
-    <!-- BARRA DE NAVEGACIÓN -->
     <nav class="bg-white shadow-sm sticky top-0 z-40">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-20 items-center">
@@ -31,37 +31,15 @@
         </div>
     </nav>
 
-    <!-- CABECERA (HERO) CON ESLOGAN -->
     <header class="bg-pineda-navy text-white text-center py-16 px-4 border-b-4 border-[#26bad4]">
         <h1 class="text-4xl md:text-5xl font-extrabold mb-4">Consultorio Pineda</h1>
         <p class="text-xl md:text-2xl font-medium text-slate-200 mb-6 italic">"Sonrisas de primera, sin dolor de muela."</p>
         <p class="text-lg md:text-xl text-slate-300 max-w-2xl mx-auto">Selecciona a uno de nuestros profesionales para ver sus servicios y agendar tu cita al instante.</p>
     </header>
 
-    <!-- CATÁLOGO DE DENTISTAS -->
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden hover:shadow-lg transition-shadow cursor-pointer group" onclick="openDentistModal('Dra. Ana López', 'Ortodoncia y Estética')">
-                <div class="h-48 bg-slate-200 overflow-hidden">
-                    <img src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&w=600&q=80" alt="Dra. Ana" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
-                </div>
-                <div class="p-6 text-center">
-                    <h3 class="text-xl font-bold text-pineda-navy">Dra. Ana López</h3>
-                    <p class="text-pineda-cyan font-medium mb-4">Ortodoncia y Estética</p>
-                    <span class="inline-block bg-cyan-50 text-pineda-cyan rounded-full px-4 py-2 text-sm font-semibold border border-cyan-100">Ver servicios y agendar</span>
-                </div>
-            </div>
-
-            <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden hover:shadow-lg transition-shadow cursor-pointer group" onclick="openDentistModal('Dr. Carlos Ruiz', 'Endodoncia e Implantes')">
-                <div class="h-48 bg-slate-200 overflow-hidden">
-                    <img src="https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&w=600&q=80" alt="Dr. Carlos" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
-                </div>
-                <div class="p-6 text-center">
-                    <h3 class="text-xl font-bold text-pineda-navy">Dr. Carlos Ruiz</h3>
-                    <p class="text-pineda-cyan font-medium mb-4">Endodoncia e Implantes</p>
-                    <span class="inline-block bg-cyan-50 text-pineda-cyan rounded-full px-4 py-2 text-sm font-semibold border border-cyan-100">Ver servicios y agendar</span>
-                </div>
-            </div>
+        <!-- El contenedor está vacío, JavaScript inyectará las tarjetas aquí -->
+        <div id="contenedorDentistas" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
         </div>
     </main>
 
@@ -77,21 +55,8 @@
                 <p id="modalDentistSpec" class="text-pineda-cyan font-medium mb-6">Especialidad</p>
                 <h3 class="text-lg font-bold mb-4 text-slate-700">Selecciona un servicio:</h3>
                 
-                <div class="space-y-3 mb-8">
-                    <label class="flex justify-between items-center p-4 border border-slate-200 rounded-xl cursor-pointer hover:bg-slate-50 transition-colors">
-                        <div class="flex items-center gap-3">
-                            <input type="radio" name="servicio" class="w-5 h-5 accent-[#26bad4]" onchange="showForm('$1,200 MXN')">
-                            <span class="font-semibold text-slate-700">Limpieza Dental Ultrasónica</span>
-                        </div>
-                        <span class="text-slate-500 text-sm">Ver precio</span>
-                    </label>
-                    <label class="flex justify-between items-center p-4 border border-slate-200 rounded-xl cursor-pointer hover:bg-slate-50 transition-colors">
-                        <div class="flex items-center gap-3">
-                            <input type="radio" name="servicio" class="w-5 h-5 accent-[#26bad4]" onchange="showForm('$850 MXN')">
-                            <span class="font-semibold text-slate-700">Consulta de Valoración</span>
-                        </div>
-                        <span class="text-slate-500 text-sm">Ver precio</span>
-                    </label>
+                <div class="space-y-3 mb-8" id="listaServiciosModal">
+                    <!-- Los servicios se cargarán dinámicamente -->
                 </div>
 
                 <div id="bookingForm" class="hidden bg-cyan-50 p-6 rounded-xl border border-cyan-100">
@@ -142,7 +107,7 @@
                 <form onsubmit="validarLogin(event)">
                     <div class="space-y-5">
                         <div>
-                            <label class="block text-sm font-medium text-slate-700 mb-1">Usuario</label>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Usuario / Correo</label>
                             <div class="relative">
                                 <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                     <i class="fa-solid fa-user text-slate-400"></i>
@@ -169,12 +134,41 @@
     </div>
 
     <script>
+        // Cargar dentistas desde el almacenamiento local
+        function cargarDentistasPublicos() {
+            const dentistas = JSON.parse(localStorage.getItem('dentistas_pineda')) || [];
+            const contenedor = document.getElementById('contenedorDentistas');
+            contenedor.innerHTML = '';
+
+            if (dentistas.length === 0) {
+                contenedor.innerHTML = '<p class="text-slate-500 col-span-full text-center">No hay dentistas registrados aún.</p>';
+                return;
+            }
+
+            dentistas.forEach((dentista, index) => {
+                const card = document.createElement('div');
+                card.className = "bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden hover:shadow-lg transition-shadow cursor-pointer group";
+                card.onclick = () => openDentistModal(index);
+
+                card.innerHTML = `
+                    <div class="h-48 bg-slate-200 overflow-hidden flex items-center justify-center">
+                        <i class="fa-solid fa-user-doctor text-6xl text-slate-400 group-hover:scale-110 transition-transform duration-300"></i>
+                    </div>
+                    <div class="p-6 text-center">
+                        <h3 class="text-xl font-bold text-pineda-navy">${dentista.nombre}</h3>
+                        <p class="text-pineda-cyan font-medium mb-4">${dentista.especialidad}</p>
+                        <span class="inline-block bg-cyan-50 text-pineda-cyan rounded-full px-4 py-2 text-sm font-semibold border border-cyan-100">Ver servicios y agendar</span>
+                    </div>
+                `;
+                contenedor.appendChild(card);
+            });
+        }
+
         function toggleModal(modalID) {
             const modal = document.getElementById(modalID);
             modal.classList.toggle('hidden');
             if (modalID === 'dentistModal' && modal.classList.contains('hidden')) {
                 document.getElementById('bookingForm').classList.add('hidden');
-                document.querySelectorAll('input[name="servicio"]').forEach(radio => radio.checked = false);
             }
             if (modalID === 'loginModal' && modal.classList.contains('hidden')) {
                 document.getElementById('username').value = '';
@@ -182,31 +176,66 @@
             }
         }
         
-        function openDentistModal(name, specialty) {
-            document.getElementById('modalDentistName').innerText = name;
-            document.getElementById('modalDentistSpec').innerText = specialty;
+        function openDentistModal(index) {
+            const dentistas = JSON.parse(localStorage.getItem('dentistas_pineda')) || [];
+            const dentista = dentistas[index];
+            
+            document.getElementById('modalDentistName').innerText = dentista.nombre;
+            document.getElementById('modalDentistSpec').innerText = dentista.especialidad;
+            
+            const listaServicios = document.getElementById('listaServiciosModal');
+            listaServicios.innerHTML = `
+                <label class="flex justify-between items-center p-4 border border-slate-200 rounded-xl cursor-pointer hover:bg-slate-50 transition-colors">
+                    <div class="flex items-center gap-3">
+                        <input type="radio" name="servicio" class="w-5 h-5 accent-[#26bad4]" onchange="showForm('${dentista.servicio1Precio}')">
+                        <span class="font-semibold text-slate-700">${dentista.servicio1Nombre}</span>
+                    </div>
+                    <span class="text-slate-500 text-sm">Ver precio</span>
+                </label>
+                <label class="flex justify-between items-center p-4 border border-slate-200 rounded-xl cursor-pointer hover:bg-slate-50 transition-colors">
+                    <div class="flex items-center gap-3">
+                        <input type="radio" name="servicio" class="w-5 h-5 accent-[#26bad4]" onchange="showForm('${dentista.servicio2Precio}')">
+                        <span class="font-semibold text-slate-700">${dentista.servicio2Nombre}</span>
+                    </div>
+                    <span class="text-slate-500 text-sm">Ver precio</span>
+                </label>
+            `;
+            
             toggleModal('dentistModal');
         }
         
         function showForm(price) {
-            document.getElementById('servicePrice').innerText = price;
+            document.getElementById('servicePrice').innerText = "$" + price + " MXN";
             document.getElementById('bookingForm').classList.remove('hidden');
             document.getElementById('bookingForm').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }
 
         function validarLogin(event) {
             event.preventDefault();
-
             const user = document.getElementById('username').value.trim();
             const pass = document.getElementById('password').value;
 
-            if ((user === 'mario.ortiz' && pass === '12345678') || 
-                (user === 'kevin.pineda' && pass === '12345678')) {
+            // Validación Super Admin
+            if ((user === 'mario.ortiz' && pass === '12345678') || (user === 'kevin.pineda' && pass === '12345678')) {
                 window.location.href = 'admin.html';
+                return;
+            }
+
+            // Validación Dentistas
+            const dentistas = JSON.parse(localStorage.getItem('dentistas_pineda')) || [];
+            const dentistaEncontrado = dentistas.find(d => d.correo === user && d.password === pass);
+
+            if (dentistaEncontrado) {
+                // Guardamos quién inició sesión temporalmente
+                sessionStorage.setItem('dentistaLogueado', JSON.stringify(dentistaEncontrado));
+                window.location.href = 'panel_dentista.html';
             } else {
                 alert('Usuario o contraseña incorrectos.');
             }
         }
+
+        // Cargar al iniciar la página
+        document.addEventListener('DOMContentLoaded', cargarDentistasPublicos);
     </script>
 </body>
 </html>
