@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Consultorio Pineda | Panel de Dentista</title>
-    <link rel="icon" type="image/png" href="favicon.png?v=2">
+    <link rel="icon" type="image/png" href="favicon.png?v=3">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -18,7 +18,7 @@
 </head>
 <body class="bg-slate-50 font-sans text-slate-800 antialiased flex h-screen overflow-hidden">
 
-    <!-- MENÚ LATERAL (SIDEBAR) -->
+    <!-- MENÚ LATERAL -->
     <aside class="w-64 bg-pineda-navy text-white flex flex-col shadow-xl z-20">
         <div class="h-20 flex items-center justify-center border-b border-slate-700 px-6">
             <i class="fa-solid fa-tooth text-[#26bad4] text-2xl mr-3"></i>
@@ -26,8 +26,10 @@
         </div>
         
         <div class="p-6 text-center border-b border-slate-700">
-            <div class="w-16 h-16 rounded-full bg-[#26bad4] mx-auto flex items-center justify-center text-white text-2xl font-bold mb-3 shadow-lg">
-                <i class="fa-solid fa-user-doctor"></i>
+            <!-- Foto de perfil dinámica -->
+            <div class="w-20 h-20 rounded-full bg-slate-200 mx-auto mb-3 shadow-lg overflow-hidden flex items-center justify-center border-2 border-[#26bad4]">
+                <img id="sidebarFoto" src="" alt="Perfil" class="w-full h-full object-cover hidden">
+                <i id="sidebarIcono" class="fa-solid fa-user-doctor text-3xl text-slate-400"></i>
             </div>
             <p class="font-bold text-white truncate" id="sidebarNombre">Cargando...</p>
             <p class="text-xs text-[#26bad4]" id="sidebarEspecialidad">Especialidad</p>
@@ -54,7 +56,6 @@
 
     <!-- CONTENIDO PRINCIPAL -->
     <main class="flex-1 flex flex-col overflow-hidden bg-slate-50">
-        
         <header class="h-20 bg-white shadow-sm flex items-center justify-between px-8 z-10">
             <h1 class="text-2xl font-bold text-pineda-navy" id="headerTitulo">Mi Agenda de Citas</h1>
             <div class="flex items-center gap-3 text-sm text-slate-500">
@@ -78,45 +79,13 @@
                                 <th class="px-6 py-4 font-medium">Fecha y Hora</th>
                                 <th class="px-6 py-4 font-medium">Motivo (Servicio)</th>
                                 <th class="px-6 py-4 font-medium">Estado</th>
-                                <th class="px-6 py-4 font-medium text-right">Acciones</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-slate-100" id="tablaAgenda">
-                            <!-- Datos de ejemplo de citas -->
-                            <tr class="hover:bg-slate-50 transition-colors">
-                                <td class="px-6 py-4">
-                                    <p class="font-bold text-slate-800">María Fernanda Ruiz</p>
-                                    <p class="text-sm text-slate-500"><i class="fa-brands fa-whatsapp text-emerald-500"></i> 81 1234 5678</p>
-                                </td>
-                                <td class="px-6 py-4 text-slate-600">
-                                    <p class="font-medium">10 Oct 2026</p>
-                                    <p class="text-sm">10:00 AM</p>
-                                </td>
-                                <td class="px-6 py-4 text-slate-600 font-medium">Limpieza Dental</td>
-                                <td class="px-6 py-4">
-                                    <span class="bg-amber-100 text-amber-700 px-3 py-1 rounded-full text-xs font-bold">Por Confirmar</span>
-                                </td>
-                                <td class="px-6 py-4 text-right space-x-2">
-                                    <button class="text-slate-400 hover:text-emerald-500 transition-colors" title="Confirmar Cita"><i class="fa-solid fa-check-circle text-lg"></i></button>
-                                    <button class="text-slate-400 hover:text-pineda-cyan transition-colors" title="Reprogramar"><i class="fa-solid fa-calendar-day text-lg"></i></button>
-                                </td>
-                            </tr>
-                            <tr class="hover:bg-slate-50 transition-colors">
-                                <td class="px-6 py-4">
-                                    <p class="font-bold text-slate-800">Jorge Alberto Silva</p>
-                                    <p class="text-sm text-slate-500"><i class="fa-brands fa-whatsapp text-emerald-500"></i> 81 9876 5432</p>
-                                </td>
-                                <td class="px-6 py-4 text-slate-600">
-                                    <p class="font-medium">10 Oct 2026</p>
-                                    <p class="text-sm">12:30 PM</p>
-                                </td>
-                                <td class="px-6 py-4 text-slate-600 font-medium">Consulta de Valoración</td>
-                                <td class="px-6 py-4">
-                                    <span class="bg-emerald-100 text-emerald-700 px-3 py-1 rounded-full text-xs font-bold">Confirmada</span>
-                                </td>
-                                <td class="px-6 py-4 text-right space-x-2">
-                                    <button class="text-slate-400 hover:text-pineda-navy transition-colors" title="Marcar Completada"><i class="fa-solid fa-clipboard-check text-lg"></i></button>
-                                    <button class="text-slate-400 hover:text-red-500 transition-colors" title="Cancelar"><i class="fa-solid fa-ban text-lg"></i></button>
+                        <tbody class="divide-y divide-slate-100">
+                            <tr>
+                                <td colspan="4" class="px-6 py-8 text-center text-slate-500">
+                                    <i class="fa-regular fa-calendar-xmark text-4xl mb-2 text-slate-300"></i>
+                                    <p>Aún no tienes citas registradas.</p>
                                 </td>
                             </tr>
                         </tbody>
@@ -127,32 +96,48 @@
             <!-- VISTA: SERVICIOS -->
             <div id="vista-servicios" class="vista-panel hidden">
                 <div class="flex justify-between items-center mb-6">
-                    <h2 class="text-lg font-bold text-slate-700">Catálogo de Tratamientos</h2>
+                    <h2 class="text-lg font-bold text-slate-700">Catálogo de Tratamientos y Trabajos</h2>
                     <button onclick="abrirModalServicio()" class="bg-pineda-cyan hover:bg-[#1fa1b8] text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors shadow-sm flex items-center gap-2">
-                        <i class="fa-solid fa-plus"></i> Agregar Servicio
+                        <i class="fa-solid fa-plus"></i> Nuevo Servicio
                     </button>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="contenedorMisServicios">
-                    <!-- JS inyectará las tarjetas de servicios aquí -->
+                    <!-- Tarjetas inyectadas por JS -->
                 </div>
             </div>
 
             <!-- VISTA: PERFIL -->
             <div id="vista-perfil" class="vista-panel hidden">
                 <div class="max-w-2xl bg-white rounded-2xl shadow-sm border border-slate-100 p-8">
-                    <h2 class="text-xl font-bold text-pineda-navy mb-6 border-b border-slate-100 pb-4">Información de Contacto y Perfil</h2>
+                    <h2 class="text-xl font-bold text-pineda-navy mb-6 border-b border-slate-100 pb-4">Personaliza tu Perfil Público</h2>
                     
                     <form onsubmit="guardarPerfil(event)">
-                        <div class="space-y-5">
-                            <div>
-                                <label class="block text-sm font-medium text-slate-700 mb-1">Nombre Público</label>
-                                <input type="text" id="perfilNombre" required class="w-full px-4 py-2 border border-slate-300 rounded-lg outline-none focus:border-[#26bad4] bg-slate-50">
+                        <div class="flex items-center gap-6 mb-8">
+                            <div class="relative w-24 h-24 rounded-full border-4 border-slate-100 overflow-hidden bg-slate-100 flex-shrink-0">
+                                <img id="previewPerfil" src="" class="w-full h-full object-cover hidden">
+                                <div id="placeholderPerfil" class="w-full h-full flex items-center justify-center text-slate-400 text-3xl">
+                                    <i class="fa-solid fa-camera"></i>
+                                </div>
                             </div>
+                            <div>
+                                <label class="block text-sm font-medium text-slate-700 mb-2">Foto de Perfil Profesional</label>
+                                <input type="file" id="inputFotoPerfil" accept="image/*" onchange="cargarFotoPerfil(event)" class="text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-cyan-50 file:text-pineda-cyan hover:file:bg-cyan-100 cursor-pointer">
+                                <p class="text-xs text-slate-400 mt-1">Sube una foto clara. Esta aparecerá en la página principal.</p>
+                            </div>
+                        </div>
+
+                        <div class="space-y-5">
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
-                                    <label class="block text-sm font-medium text-slate-700 mb-1">Especialidad</label>
-                                    <input type="text" id="perfilEspecialidad" readonly class="w-full px-4 py-2 border border-slate-300 rounded-lg outline-none bg-slate-100 text-slate-500">
+                                    <label class="block text-sm font-medium text-slate-700 mb-1">Nombre Público</label>
+                                    <input type="text" id="perfilNombre" required class="w-full px-4 py-2 border border-slate-300 rounded-lg outline-none focus:border-[#26bad4]">
                                 </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-slate-700 mb-1">Especialidad</label>
+                                    <input type="text" id="perfilEspecialidad" class="w-full px-4 py-2 border border-slate-300 rounded-lg outline-none focus:border-[#26bad4]">
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-slate-100">
                                 <div>
                                     <label class="block text-sm font-medium text-slate-700 mb-1">WhatsApp de Contacto</label>
                                     <div class="relative">
@@ -162,12 +147,6 @@
                                         <input type="tel" id="perfilWhatsapp" placeholder="Ej. 81 1234 5678" class="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg outline-none focus:border-[#26bad4]">
                                     </div>
                                 </div>
-                            </div>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-slate-100">
-                                <div>
-                                    <label class="block text-sm font-medium text-slate-700 mb-1">Correo (Usuario de Login)</label>
-                                    <input type="email" id="perfilCorreo" readonly class="w-full px-4 py-2 border border-slate-300 rounded-lg outline-none bg-slate-100 text-slate-500">
-                                </div>
                                 <div>
                                     <label class="block text-sm font-medium text-slate-700 mb-1">Contraseña</label>
                                     <input type="password" id="perfilPassword" required class="w-full px-4 py-2 border border-slate-300 rounded-lg outline-none focus:border-[#26bad4]">
@@ -175,21 +154,20 @@
                             </div>
                             <div class="pt-4 flex justify-end">
                                 <button type="submit" class="bg-pineda-navy hover:bg-[#122543] text-white px-6 py-2.5 rounded-lg font-bold transition-colors shadow-md">
-                                    Actualizar Datos
+                                    Guardar Cambios
                                 </button>
                             </div>
                         </div>
                     </form>
                 </div>
             </div>
-
         </div>
     </main>
 
-    <!-- MODAL: AGREGAR/EDITAR SERVICIO -->
+    <!-- MODAL: SERVICIOS Y FOTOS -->
     <div id="modalServicio" class="modal hidden fixed inset-0 bg-slate-900 bg-opacity-60 z-50 flex items-center justify-center p-4">
-        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden">
-            <div class="bg-pineda-navy px-6 py-4 flex justify-between items-center">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-y-auto max-h-[90vh]">
+            <div class="sticky top-0 bg-pineda-navy px-6 py-4 flex justify-between items-center z-10">
                 <h2 class="text-lg font-bold text-white" id="tituloModalServicio">Nuevo Servicio</h2>
                 <button onclick="cerrarModalServicio()" class="text-slate-300 hover:text-white text-2xl leading-none">&times;</button>
             </div>
@@ -198,124 +176,210 @@
                 <div class="space-y-4 mb-6">
                     <div>
                         <label class="block text-sm font-medium text-slate-700 mb-1">Nombre del Tratamiento</label>
-                        <input type="text" id="servicioNombre" required placeholder="Ej. Blanqueamiento Láser" class="w-full px-4 py-2 border border-slate-300 rounded-lg outline-none focus:border-[#26bad4]">
+                        <input type="text" id="servicioNombre" required placeholder="Ej. Blanqueamiento" class="w-full px-4 py-2 border border-slate-300 rounded-lg outline-none focus:border-[#26bad4]">
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-slate-700 mb-1">Precio (MXN)</label>
-                        <div class="relative">
-                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-500">$</div>
-                            <input type="number" id="servicioPrecio" required placeholder="0.00" class="w-full pl-8 pr-4 py-2 border border-slate-300 rounded-lg outline-none focus:border-[#26bad4]">
-                        </div>
+                        <input type="number" id="servicioPrecio" required placeholder="0.00" class="w-full px-4 py-2 border border-slate-300 rounded-lg outline-none focus:border-[#26bad4]">
+                    </div>
+                    
+                    <!-- FOTOS DEL SERVICIO -->
+                    <div class="pt-4 border-t border-slate-100">
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Evidencia / Fotos del Trabajo (Opcional)</label>
+                        <input type="file" id="inputFotosServicio" accept="image/*" multiple onchange="cargarFotosServicio(event)" class="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-cyan-50 file:text-pineda-cyan hover:file:bg-cyan-100 cursor-pointer mb-2">
+                        <!-- Galería de fotos a subir -->
+                        <div id="galeriaServicio" class="flex gap-2 flex-wrap mt-2"></div>
                     </div>
                 </div>
-                <div class="flex items-center justify-end gap-3">
+                <div class="flex items-center justify-end gap-3 pt-4 border-t border-slate-100">
                     <button type="button" onclick="cerrarModalServicio()" class="px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-lg">Cancelar</button>
-                    <button type="submit" class="px-4 py-2 bg-pineda-cyan hover:bg-[#1fa1b8] text-white font-bold rounded-lg shadow-sm">Guardar</button>
+                    <button type="submit" class="px-4 py-2 bg-pineda-cyan hover:bg-[#1fa1b8] text-white font-bold rounded-lg shadow-sm">Guardar Servicio</button>
                 </div>
             </form>
         </div>
     </div>
 
     <script>
-        // --- 1. INICIALIZACIÓN Y CARGA DE DATOS ---
         let doctorActual = JSON.parse(sessionStorage.getItem('dentistaLogueado'));
-        
-        if(!doctorActual) {
-            window.location.href = 'index.html'; // Seguridad: si no hay login, pa' fuera
+        if(!doctorActual) window.location.href = 'index.html';
+
+        if(!doctorActual.servicios) doctorActual.servicios = [];
+        let fotosTemporalesServicio = [];
+        let fotoPerfilTemporal = doctorActual.fotoPerfil || null;
+
+        // --- COMPRESOR DE IMÁGENES (Para no saturar el localStorage) ---
+        function comprimirImagen(file, maxResolucion) {
+            return new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = (e) => {
+                    const img = new Image();
+                    img.src = e.target.result;
+                    img.onload = () => {
+                        const canvas = document.createElement('canvas');
+                        let width = img.width;
+                        let height = img.height;
+                        if (width > height && width > maxResolucion) {
+                            height *= maxResolucion / width;
+                            width = maxResolucion;
+                        } else if (height > maxResolucion) {
+                            width *= maxResolucion / height;
+                            height = maxResolucion;
+                        }
+                        canvas.width = width;
+                        canvas.height = height;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, width, height);
+                        resolve(canvas.toDataURL('image/jpeg', 0.6)); // Calidad reducida para ahorrar espacio
+                    };
+                };
+            });
         }
 
-        // Migración estructural: Convertir los 2 servicios fijos del admin a un Array dinámico e ilimitado
-        if(!doctorActual.servicios) {
-            doctorActual.servicios = [];
-            if(doctorActual.servicio1Nombre) {
-                doctorActual.servicios.push({ id: Date.now(), nombre: doctorActual.servicio1Nombre, precio: doctorActual.servicio1Precio });
+        // --- CARGA INICIAL ---
+        function inicializarPanel() {
+            document.getElementById('sidebarNombre').innerText = doctorActual.nombre;
+            document.getElementById('sidebarEspecialidad').innerText = doctorActual.especialidad;
+            
+            document.getElementById('perfilNombre').value = doctorActual.nombre;
+            document.getElementById('perfilEspecialidad').value = doctorActual.especialidad;
+            document.getElementById('perfilPassword').value = doctorActual.password;
+            document.getElementById('perfilWhatsapp').value = doctorActual.whatsapp || "";
+
+            if(doctorActual.fotoPerfil) {
+                document.getElementById('sidebarFoto').src = doctorActual.fotoPerfil;
+                document.getElementById('sidebarFoto').classList.remove('hidden');
+                document.getElementById('sidebarIcono').classList.add('hidden');
+                
+                document.getElementById('previewPerfil').src = doctorActual.fotoPerfil;
+                document.getElementById('previewPerfil').classList.remove('hidden');
+                document.getElementById('placeholderPerfil').classList.add('hidden');
             }
-            if(doctorActual.servicio2Nombre) {
-                doctorActual.servicios.push({ id: Date.now() + 1, nombre: doctorActual.servicio2Nombre, precio: doctorActual.servicio2Precio });
-            }
-            actualizarBaseDeDatos(doctorActual);
+
+            setInterval(() => { document.getElementById('reloj').innerText = new Date().toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' }); }, 1000);
         }
-        if(!doctorActual.whatsapp) doctorActual.whatsapp = "";
 
-        // Pintar datos en la interfaz
-        document.getElementById('sidebarNombre').innerText = doctorActual.nombre;
-        document.getElementById('sidebarEspecialidad').innerText = doctorActual.especialidad;
-        
-        // Cargar Perfil
-        document.getElementById('perfilNombre').value = doctorActual.nombre;
-        document.getElementById('perfilEspecialidad').value = doctorActual.especialidad;
-        document.getElementById('perfilCorreo').value = doctorActual.correo;
-        document.getElementById('perfilPassword').value = doctorActual.password;
-        document.getElementById('perfilWhatsapp').value = doctorActual.whatsapp;
-
-        // Reloj en tiempo real
-        setInterval(() => {
-            document.getElementById('reloj').innerText = new Date().toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' });
-        }, 1000);
-
-        // --- 2. NAVEGACIÓN ENTRE PESTAÑAS ---
         function switchTab(tabId) {
-            // Ocultar todas las vistas
             document.querySelectorAll('.vista-panel').forEach(el => el.classList.add('hidden'));
             document.querySelectorAll('[id^="btn-"]').forEach(el => {
                 el.classList.remove('tab-active', 'bg-[#f8fafc]', 'text-[#26bad4]');
                 el.classList.add('text-slate-300');
             });
-            
-            // Mostrar la seleccionada
             document.getElementById(`vista-${tabId}`).classList.remove('hidden');
             const btn = document.getElementById(`btn-${tabId}`);
             btn.classList.add('tab-active');
             btn.classList.remove('text-slate-300');
 
-            // Cambiar título
-            const titulos = {
-                'agenda': 'Mi Agenda de Citas',
-                'servicios': 'Gestión de Servicios',
-                'perfil': 'Mi Perfil'
-            };
+            const titulos = { 'agenda': 'Mi Agenda de Citas', 'servicios': 'Gestión de Servicios', 'perfil': 'Mi Perfil' };
             document.getElementById('headerTitulo').innerText = titulos[tabId];
 
             if(tabId === 'servicios') renderizarServicios();
         }
 
-        // --- 3. GESTIÓN DE SERVICIOS ILIMITADOS ---
+        // --- GESTIÓN DE PERFIL ---
+        async function cargarFotoPerfil(event) {
+            const file = event.target.files[0];
+            if(file) {
+                fotoPerfilTemporal = await comprimirImagen(file, 400); // 400px max
+                document.getElementById('previewPerfil').src = fotoPerfilTemporal;
+                document.getElementById('previewPerfil').classList.remove('hidden');
+                document.getElementById('placeholderPerfil').classList.add('hidden');
+            }
+        }
+
+        function guardarPerfil(event) {
+            event.preventDefault();
+            doctorActual.nombre = document.getElementById('perfilNombre').value;
+            doctorActual.especialidad = document.getElementById('perfilEspecialidad').value;
+            doctorActual.password = document.getElementById('perfilPassword').value;
+            doctorActual.whatsapp = document.getElementById('perfilWhatsapp').value;
+            if(fotoPerfilTemporal) doctorActual.fotoPerfil = fotoPerfilTemporal;
+            
+            actualizarBaseDeDatos(doctorActual);
+            inicializarPanel();
+            alert("Perfil y foto actualizados correctamente. Tus pacientes ya pueden ver los cambios en la página principal.");
+        }
+
+        // --- GESTIÓN DE SERVICIOS Y FOTOS ---
         function renderizarServicios() {
             const contenedor = document.getElementById('contenedorMisServicios');
             contenedor.innerHTML = '';
 
             if(doctorActual.servicios.length === 0) {
-                contenedor.innerHTML = `<p class="col-span-full text-slate-500 text-center py-8">No tienes servicios registrados. Agrega uno nuevo.</p>`;
+                contenedor.innerHTML = `<p class="col-span-full text-slate-500 text-center py-8">No tienes servicios registrados.</p>`;
                 return;
             }
 
             doctorActual.servicios.forEach(serv => {
+                let galeriaHTML = '';
+                if(serv.fotos && serv.fotos.length > 0) {
+                    galeriaHTML = `<div class="flex gap-1 mt-3 overflow-x-auto pb-2">`;
+                    serv.fotos.forEach(foto => {
+                        galeriaHTML += `<img src="${foto}" class="w-12 h-12 rounded object-cover border border-slate-200 flex-shrink-0">`;
+                    });
+                    galeriaHTML += `</div>`;
+                }
+
                 const card = document.createElement('div');
                 card.className = "bg-white border border-slate-200 rounded-xl p-5 shadow-sm hover:shadow-md transition-shadow relative group";
                 card.innerHTML = `
-                    <div class="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity flex gap-2">
-                        <button onclick="editarServicio(${serv.id})" class="w-8 h-8 rounded-full bg-slate-100 text-slate-600 hover:text-pineda-cyan hover:bg-cyan-50 flex items-center justify-center transition-colors"><i class="fa-solid fa-pen text-sm"></i></button>
-                        <button onclick="eliminarServicio(${serv.id})" class="w-8 h-8 rounded-full bg-slate-100 text-slate-600 hover:text-red-500 hover:bg-red-50 flex items-center justify-center transition-colors"><i class="fa-solid fa-trash text-sm"></i></button>
+                    <div class="absolute top-4 right-4 flex gap-2">
+                        <button onclick="editarServicio(${serv.id})" class="w-8 h-8 rounded-full bg-slate-100 text-slate-600 hover:text-pineda-cyan flex items-center justify-center"><i class="fa-solid fa-pen text-sm"></i></button>
+                        <button onclick="eliminarServicio(${serv.id})" class="w-8 h-8 rounded-full bg-slate-100 text-slate-600 hover:text-red-500 flex items-center justify-center"><i class="fa-solid fa-trash text-sm"></i></button>
                     </div>
-                    <div class="w-12 h-12 bg-cyan-50 text-pineda-cyan rounded-lg flex items-center justify-center text-xl mb-4">
-                        <i class="fa-solid fa-tooth"></i>
-                    </div>
+                    <div class="w-10 h-10 bg-cyan-50 text-pineda-cyan rounded-lg flex items-center justify-center text-lg mb-3"><i class="fa-solid fa-tooth"></i></div>
                     <h3 class="font-bold text-slate-800 text-lg mb-1 pr-16">${serv.nombre}</h3>
-                    <p class="text-2xl font-bold text-pineda-navy">$${serv.precio} <span class="text-sm font-normal text-slate-500">MXN</span></p>
+                    <p class="text-xl font-bold text-pineda-navy">$${serv.precio} <span class="text-xs text-slate-500">MXN</span></p>
+                    ${galeriaHTML}
                 `;
                 contenedor.appendChild(card);
             });
         }
 
+        async function cargarFotosServicio(event) {
+            const files = Array.from(event.target.files);
+            const galeria = document.getElementById('galeriaServicio');
+            
+            for(let file of files) {
+                const base64 = await comprimirImagen(file, 600); // 600px max para servicios
+                fotosTemporalesServicio.push(base64);
+                
+                const img = document.createElement('img');
+                img.src = base64;
+                img.className = "w-16 h-16 rounded-md object-cover border border-slate-200 shadow-sm";
+                galeria.appendChild(img);
+            }
+        }
+
         function abrirModalServicio() {
-            document.getElementById('formNuevoUsuario')?.reset();
             document.getElementById('servicioId').value = '';
+            document.getElementById('servicioNombre').value = '';
+            document.getElementById('servicioPrecio').value = '';
+            document.getElementById('inputFotosServicio').value = '';
+            document.getElementById('galeriaServicio').innerHTML = '';
+            fotosTemporalesServicio = [];
+            
             document.getElementById('tituloModalServicio').innerText = 'Nuevo Servicio';
             document.getElementById('modalServicio').classList.remove('hidden');
         }
 
-        function cerrarModalServicio() {
-            document.getElementById('modalServicio').classList.add('hidden');
+        function editarServicio(id) {
+            const serv = doctorActual.servicios.find(s => s.id === id);
+            document.getElementById('servicioId').value = serv.id;
+            document.getElementById('servicioNombre').value = serv.nombre;
+            document.getElementById('servicioPrecio').value = serv.precio;
+            
+            document.getElementById('galeriaServicio').innerHTML = '';
+            fotosTemporalesServicio = serv.fotos ? [...serv.fotos] : [];
+            fotosTemporalesServicio.forEach(foto => {
+                const img = document.createElement('img');
+                img.src = foto;
+                img.className = "w-16 h-16 rounded-md object-cover border border-slate-200 shadow-sm";
+                document.getElementById('galeriaServicio').appendChild(img);
+            });
+
+            document.getElementById('tituloModalServicio').innerText = 'Editar Servicio';
+            document.getElementById('modalServicio').classList.remove('hidden');
         }
 
         function guardarServicio(event) {
@@ -325,12 +389,10 @@
             const precio = document.getElementById('servicioPrecio').value;
 
             if(id) {
-                // Editar existente
                 const index = doctorActual.servicios.findIndex(s => s.id == id);
-                doctorActual.servicios[index] = { id: parseInt(id), nombre, precio };
+                doctorActual.servicios[index] = { id: parseInt(id), nombre, precio, fotos: fotosTemporalesServicio };
             } else {
-                // Crear nuevo
-                doctorActual.servicios.push({ id: Date.now(), nombre, precio });
+                doctorActual.servicios.push({ id: Date.now(), nombre, precio, fotos: fotosTemporalesServicio });
             }
 
             actualizarBaseDeDatos(doctorActual);
@@ -338,45 +400,22 @@
             cerrarModalServicio();
         }
 
-        function editarServicio(id) {
-            const serv = doctorActual.servicios.find(s => s.id === id);
-            document.getElementById('servicioId').value = serv.id;
-            document.getElementById('servicioNombre').value = serv.nombre;
-            document.getElementById('servicioPrecio').value = serv.precio;
-            document.getElementById('tituloModalServicio').innerText = 'Editar Servicio';
-            document.getElementById('modalServicio').classList.remove('hidden');
-        }
-
         function eliminarServicio(id) {
-            if(confirm("¿Estás seguro de eliminar este servicio del catálogo público?")) {
+            if(confirm("¿Eliminar este servicio del catálogo público?")) {
                 doctorActual.servicios = doctorActual.servicios.filter(s => s.id !== id);
                 actualizarBaseDeDatos(doctorActual);
                 renderizarServicios();
             }
         }
 
-        // --- 4. GESTIÓN DE PERFIL ---
-        function guardarPerfil(event) {
-            event.preventDefault();
-            doctorActual.nombre = document.getElementById('perfilNombre').value;
-            doctorActual.password = document.getElementById('perfilPassword').value;
-            doctorActual.whatsapp = document.getElementById('perfilWhatsapp').value;
-            
-            document.getElementById('sidebarNombre').innerText = doctorActual.nombre;
-            actualizarBaseDeDatos(doctorActual);
-            alert("Perfil actualizado correctamente. Los pacientes ahora verán tu nueva información.");
-        }
+        function cerrarModalServicio() { document.getElementById('modalServicio').classList.add('hidden'); }
 
-        // --- 5. FUNCIONES GLOBALES ---
-        function actualizarBaseDeDatos(datosActualizados) {
-            // Actualizar sesión actual
-            sessionStorage.setItem('dentistaLogueado', JSON.stringify(datosActualizados));
-            
-            // Actualizar base de datos general (localStorage)
+        function actualizarBaseDeDatos(datos) {
+            sessionStorage.setItem('dentistaLogueado', JSON.stringify(datos));
             let dentistasBD = JSON.parse(localStorage.getItem('dentistas_pineda')) || [];
-            let index = dentistasBD.findIndex(d => d.correo === datosActualizados.correo);
+            let index = dentistasBD.findIndex(d => d.correo === datos.correo);
             if(index !== -1) {
-                dentistasBD[index] = datosActualizados;
+                dentistasBD[index] = datos;
                 localStorage.setItem('dentistas_pineda', JSON.stringify(dentistasBD));
             }
         }
@@ -385,6 +424,8 @@
             sessionStorage.removeItem('dentistaLogueado');
             window.location.href = 'index.html';
         }
+
+        document.addEventListener('DOMContentLoaded', inicializarPanel);
     </script>
 </body>
 </html>
