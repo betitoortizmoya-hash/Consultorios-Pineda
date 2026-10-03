@@ -3,31 +3,382 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel de Dentista</title>
+    <title>Consultorio Pineda | Panel de Dentista</title>
     <link rel="icon" type="image/png" href="favicon.png?v=2">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .modal { transition: opacity 0.3s ease; }
+        .bg-pineda-cyan { background-color: #26bad4; }
+        .text-pineda-cyan { color: #26bad4; }
+        .bg-pineda-navy { background-color: #1b365d; }
+        .text-pineda-navy { color: #1b365d; }
+        .tab-active { background-color: #f8fafc; color: #26bad4; border-left: 4px solid #26bad4; }
+    </style>
 </head>
-<body class="bg-slate-50 font-sans text-slate-800 antialiased p-8">
-    
-    <div class="max-w-3xl mx-auto bg-white rounded-2xl shadow-sm border border-slate-100 p-8 text-center mt-12">
-        <i class="fa-solid fa-tooth text-[#26bad4] text-6xl mb-4"></i>
-        <h1 class="text-3xl font-bold text-[#1b365d] mb-2" id="bienvenidaNombre">Bienvenido, Doctor</h1>
-        <p class="text-slate-500 mb-8">Este es tu panel privado. Aquí pronto podrás actualizar tus precios y ver tus citas agendadas.</p>
+<body class="bg-slate-50 font-sans text-slate-800 antialiased flex h-screen overflow-hidden">
+
+    <!-- MENÚ LATERAL (SIDEBAR) -->
+    <aside class="w-64 bg-pineda-navy text-white flex flex-col shadow-xl z-20">
+        <div class="h-20 flex items-center justify-center border-b border-slate-700 px-6">
+            <i class="fa-solid fa-tooth text-[#26bad4] text-2xl mr-3"></i>
+            <span class="text-xl font-bold tracking-tight">Panel Médico</span>
+        </div>
         
-        <button onclick="cerrarSesion()" class="bg-[#1b365d] hover:bg-slate-800 text-white px-6 py-2 rounded-lg transition-colors">
-            Cerrar Sesión
-        </button>
+        <div class="p-6 text-center border-b border-slate-700">
+            <div class="w-16 h-16 rounded-full bg-[#26bad4] mx-auto flex items-center justify-center text-white text-2xl font-bold mb-3 shadow-lg">
+                <i class="fa-solid fa-user-doctor"></i>
+            </div>
+            <p class="font-bold text-white truncate" id="sidebarNombre">Cargando...</p>
+            <p class="text-xs text-[#26bad4]" id="sidebarEspecialidad">Especialidad</p>
+        </div>
+
+        <nav class="flex-1 px-4 py-6 space-y-2">
+            <button onclick="switchTab('agenda')" id="btn-agenda" class="w-full flex items-center gap-3 px-4 py-3 text-slate-300 hover:bg-slate-800 hover:text-white rounded-lg font-medium transition-all tab-active">
+                <i class="fa-solid fa-calendar-check w-5"></i> Mi Agenda
+            </button>
+            <button onclick="switchTab('servicios')" id="btn-servicios" class="w-full flex items-center gap-3 px-4 py-3 text-slate-300 hover:bg-slate-800 hover:text-white rounded-lg font-medium transition-all">
+                <i class="fa-solid fa-list-check w-5"></i> Mis Servicios
+            </button>
+            <button onclick="switchTab('perfil')" id="btn-perfil" class="w-full flex items-center gap-3 px-4 py-3 text-slate-300 hover:bg-slate-800 hover:text-white rounded-lg font-medium transition-all">
+                <i class="fa-solid fa-user-gear w-5"></i> Mi Perfil
+            </button>
+        </nav>
+
+        <div class="p-4 border-t border-slate-700">
+            <button onclick="cerrarSesion()" class="w-full flex items-center justify-center gap-2 px-4 py-2 bg-red-500/10 text-red-400 hover:text-white hover:bg-red-500 rounded-lg transition-colors text-sm font-medium">
+                <i class="fa-solid fa-right-from-bracket"></i> Cerrar Sesión
+            </button>
+        </div>
+    </aside>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <main class="flex-1 flex flex-col overflow-hidden bg-slate-50">
+        
+        <header class="h-20 bg-white shadow-sm flex items-center justify-between px-8 z-10">
+            <h1 class="text-2xl font-bold text-pineda-navy" id="headerTitulo">Mi Agenda de Citas</h1>
+            <div class="flex items-center gap-3 text-sm text-slate-500">
+                <i class="fa-solid fa-clock"></i> <span id="reloj"></span>
+            </div>
+        </header>
+
+        <div class="flex-1 overflow-y-auto p-8">
+            
+            <!-- VISTA: AGENDA -->
+            <div id="vista-agenda" class="vista-panel">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-lg font-bold text-slate-700">Citas Programadas</h2>
+                    <input type="date" class="px-4 py-2 border border-slate-300 rounded-lg text-sm outline-none focus:border-[#26bad4]" title="Filtrar por fecha">
+                </div>
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-slate-50 text-slate-500 text-sm border-b border-slate-200">
+                                <th class="px-6 py-4 font-medium">Paciente / Contacto</th>
+                                <th class="px-6 py-4 font-medium">Fecha y Hora</th>
+                                <th class="px-6 py-4 font-medium">Motivo (Servicio)</th>
+                                <th class="px-6 py-4 font-medium">Estado</th>
+                                <th class="px-6 py-4 font-medium text-right">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100" id="tablaAgenda">
+                            <!-- Datos de ejemplo de citas -->
+                            <tr class="hover:bg-slate-50 transition-colors">
+                                <td class="px-6 py-4">
+                                    <p class="font-bold text-slate-800">María Fernanda Ruiz</p>
+                                    <p class="text-sm text-slate-500"><i class="fa-brands fa-whatsapp text-emerald-500"></i> 81 1234 5678</p>
+                                </td>
+                                <td class="px-6 py-4 text-slate-600">
+                                    <p class="font-medium">10 Oct 2026</p>
+                                    <p class="text-sm">10:00 AM</p>
+                                </td>
+                                <td class="px-6 py-4 text-slate-600 font-medium">Limpieza Dental</td>
+                                <td class="px-6 py-4">
+                                    <span class="bg-amber-100 text-amber-700 px-3 py-1 rounded-full text-xs font-bold">Por Confirmar</span>
+                                </td>
+                                <td class="px-6 py-4 text-right space-x-2">
+                                    <button class="text-slate-400 hover:text-emerald-500 transition-colors" title="Confirmar Cita"><i class="fa-solid fa-check-circle text-lg"></i></button>
+                                    <button class="text-slate-400 hover:text-pineda-cyan transition-colors" title="Reprogramar"><i class="fa-solid fa-calendar-day text-lg"></i></button>
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-slate-50 transition-colors">
+                                <td class="px-6 py-4">
+                                    <p class="font-bold text-slate-800">Jorge Alberto Silva</p>
+                                    <p class="text-sm text-slate-500"><i class="fa-brands fa-whatsapp text-emerald-500"></i> 81 9876 5432</p>
+                                </td>
+                                <td class="px-6 py-4 text-slate-600">
+                                    <p class="font-medium">10 Oct 2026</p>
+                                    <p class="text-sm">12:30 PM</p>
+                                </td>
+                                <td class="px-6 py-4 text-slate-600 font-medium">Consulta de Valoración</td>
+                                <td class="px-6 py-4">
+                                    <span class="bg-emerald-100 text-emerald-700 px-3 py-1 rounded-full text-xs font-bold">Confirmada</span>
+                                </td>
+                                <td class="px-6 py-4 text-right space-x-2">
+                                    <button class="text-slate-400 hover:text-pineda-navy transition-colors" title="Marcar Completada"><i class="fa-solid fa-clipboard-check text-lg"></i></button>
+                                    <button class="text-slate-400 hover:text-red-500 transition-colors" title="Cancelar"><i class="fa-solid fa-ban text-lg"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- VISTA: SERVICIOS -->
+            <div id="vista-servicios" class="vista-panel hidden">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-lg font-bold text-slate-700">Catálogo de Tratamientos</h2>
+                    <button onclick="abrirModalServicio()" class="bg-pineda-cyan hover:bg-[#1fa1b8] text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors shadow-sm flex items-center gap-2">
+                        <i class="fa-solid fa-plus"></i> Agregar Servicio
+                    </button>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="contenedorMisServicios">
+                    <!-- JS inyectará las tarjetas de servicios aquí -->
+                </div>
+            </div>
+
+            <!-- VISTA: PERFIL -->
+            <div id="vista-perfil" class="vista-panel hidden">
+                <div class="max-w-2xl bg-white rounded-2xl shadow-sm border border-slate-100 p-8">
+                    <h2 class="text-xl font-bold text-pineda-navy mb-6 border-b border-slate-100 pb-4">Información de Contacto y Perfil</h2>
+                    
+                    <form onsubmit="guardarPerfil(event)">
+                        <div class="space-y-5">
+                            <div>
+                                <label class="block text-sm font-medium text-slate-700 mb-1">Nombre Público</label>
+                                <input type="text" id="perfilNombre" required class="w-full px-4 py-2 border border-slate-300 rounded-lg outline-none focus:border-[#26bad4] bg-slate-50">
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-slate-700 mb-1">Especialidad</label>
+                                    <input type="text" id="perfilEspecialidad" readonly class="w-full px-4 py-2 border border-slate-300 rounded-lg outline-none bg-slate-100 text-slate-500">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-slate-700 mb-1">WhatsApp de Contacto</label>
+                                    <div class="relative">
+                                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                            <i class="fa-brands fa-whatsapp text-emerald-500"></i>
+                                        </div>
+                                        <input type="tel" id="perfilWhatsapp" placeholder="Ej. 81 1234 5678" class="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg outline-none focus:border-[#26bad4]">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-slate-100">
+                                <div>
+                                    <label class="block text-sm font-medium text-slate-700 mb-1">Correo (Usuario de Login)</label>
+                                    <input type="email" id="perfilCorreo" readonly class="w-full px-4 py-2 border border-slate-300 rounded-lg outline-none bg-slate-100 text-slate-500">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-slate-700 mb-1">Contraseña</label>
+                                    <input type="password" id="perfilPassword" required class="w-full px-4 py-2 border border-slate-300 rounded-lg outline-none focus:border-[#26bad4]">
+                                </div>
+                            </div>
+                            <div class="pt-4 flex justify-end">
+                                <button type="submit" class="bg-pineda-navy hover:bg-[#122543] text-white px-6 py-2.5 rounded-lg font-bold transition-colors shadow-md">
+                                    Actualizar Datos
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- MODAL: AGREGAR/EDITAR SERVICIO -->
+    <div id="modalServicio" class="modal hidden fixed inset-0 bg-slate-900 bg-opacity-60 z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden">
+            <div class="bg-pineda-navy px-6 py-4 flex justify-between items-center">
+                <h2 class="text-lg font-bold text-white" id="tituloModalServicio">Nuevo Servicio</h2>
+                <button onclick="cerrarModalServicio()" class="text-slate-300 hover:text-white text-2xl leading-none">&times;</button>
+            </div>
+            <form onsubmit="guardarServicio(event)" class="p-6">
+                <input type="hidden" id="servicioId">
+                <div class="space-y-4 mb-6">
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Nombre del Tratamiento</label>
+                        <input type="text" id="servicioNombre" required placeholder="Ej. Blanqueamiento Láser" class="w-full px-4 py-2 border border-slate-300 rounded-lg outline-none focus:border-[#26bad4]">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Precio (MXN)</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-500">$</div>
+                            <input type="number" id="servicioPrecio" required placeholder="0.00" class="w-full pl-8 pr-4 py-2 border border-slate-300 rounded-lg outline-none focus:border-[#26bad4]">
+                        </div>
+                    </div>
+                </div>
+                <div class="flex items-center justify-end gap-3">
+                    <button type="button" onclick="cerrarModalServicio()" class="px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-lg">Cancelar</button>
+                    <button type="submit" class="px-4 py-2 bg-pineda-cyan hover:bg-[#1fa1b8] text-white font-bold rounded-lg shadow-sm">Guardar</button>
+                </div>
+            </form>
+        </div>
     </div>
 
     <script>
-        // Verificar quién inició sesión
-        const doctor = JSON.parse(sessionStorage.getItem('dentistaLogueado'));
-        if(!doctor) {
-            // Si nadie inició sesión, lo regresa al inicio
-            window.location.href = 'index.html';
-        } else {
-            document.getElementById('bienvenidaNombre').innerText = "Bienvenido/a, " + doctor.nombre;
+        // --- 1. INICIALIZACIÓN Y CARGA DE DATOS ---
+        let doctorActual = JSON.parse(sessionStorage.getItem('dentistaLogueado'));
+        
+        if(!doctorActual) {
+            window.location.href = 'index.html'; // Seguridad: si no hay login, pa' fuera
+        }
+
+        // Migración estructural: Convertir los 2 servicios fijos del admin a un Array dinámico e ilimitado
+        if(!doctorActual.servicios) {
+            doctorActual.servicios = [];
+            if(doctorActual.servicio1Nombre) {
+                doctorActual.servicios.push({ id: Date.now(), nombre: doctorActual.servicio1Nombre, precio: doctorActual.servicio1Precio });
+            }
+            if(doctorActual.servicio2Nombre) {
+                doctorActual.servicios.push({ id: Date.now() + 1, nombre: doctorActual.servicio2Nombre, precio: doctorActual.servicio2Precio });
+            }
+            actualizarBaseDeDatos(doctorActual);
+        }
+        if(!doctorActual.whatsapp) doctorActual.whatsapp = "";
+
+        // Pintar datos en la interfaz
+        document.getElementById('sidebarNombre').innerText = doctorActual.nombre;
+        document.getElementById('sidebarEspecialidad').innerText = doctorActual.especialidad;
+        
+        // Cargar Perfil
+        document.getElementById('perfilNombre').value = doctorActual.nombre;
+        document.getElementById('perfilEspecialidad').value = doctorActual.especialidad;
+        document.getElementById('perfilCorreo').value = doctorActual.correo;
+        document.getElementById('perfilPassword').value = doctorActual.password;
+        document.getElementById('perfilWhatsapp').value = doctorActual.whatsapp;
+
+        // Reloj en tiempo real
+        setInterval(() => {
+            document.getElementById('reloj').innerText = new Date().toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' });
+        }, 1000);
+
+        // --- 2. NAVEGACIÓN ENTRE PESTAÑAS ---
+        function switchTab(tabId) {
+            // Ocultar todas las vistas
+            document.querySelectorAll('.vista-panel').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('[id^="btn-"]').forEach(el => {
+                el.classList.remove('tab-active', 'bg-[#f8fafc]', 'text-[#26bad4]');
+                el.classList.add('text-slate-300');
+            });
+            
+            // Mostrar la seleccionada
+            document.getElementById(`vista-${tabId}`).classList.remove('hidden');
+            const btn = document.getElementById(`btn-${tabId}`);
+            btn.classList.add('tab-active');
+            btn.classList.remove('text-slate-300');
+
+            // Cambiar título
+            const titulos = {
+                'agenda': 'Mi Agenda de Citas',
+                'servicios': 'Gestión de Servicios',
+                'perfil': 'Mi Perfil'
+            };
+            document.getElementById('headerTitulo').innerText = titulos[tabId];
+
+            if(tabId === 'servicios') renderizarServicios();
+        }
+
+        // --- 3. GESTIÓN DE SERVICIOS ILIMITADOS ---
+        function renderizarServicios() {
+            const contenedor = document.getElementById('contenedorMisServicios');
+            contenedor.innerHTML = '';
+
+            if(doctorActual.servicios.length === 0) {
+                contenedor.innerHTML = `<p class="col-span-full text-slate-500 text-center py-8">No tienes servicios registrados. Agrega uno nuevo.</p>`;
+                return;
+            }
+
+            doctorActual.servicios.forEach(serv => {
+                const card = document.createElement('div');
+                card.className = "bg-white border border-slate-200 rounded-xl p-5 shadow-sm hover:shadow-md transition-shadow relative group";
+                card.innerHTML = `
+                    <div class="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity flex gap-2">
+                        <button onclick="editarServicio(${serv.id})" class="w-8 h-8 rounded-full bg-slate-100 text-slate-600 hover:text-pineda-cyan hover:bg-cyan-50 flex items-center justify-center transition-colors"><i class="fa-solid fa-pen text-sm"></i></button>
+                        <button onclick="eliminarServicio(${serv.id})" class="w-8 h-8 rounded-full bg-slate-100 text-slate-600 hover:text-red-500 hover:bg-red-50 flex items-center justify-center transition-colors"><i class="fa-solid fa-trash text-sm"></i></button>
+                    </div>
+                    <div class="w-12 h-12 bg-cyan-50 text-pineda-cyan rounded-lg flex items-center justify-center text-xl mb-4">
+                        <i class="fa-solid fa-tooth"></i>
+                    </div>
+                    <h3 class="font-bold text-slate-800 text-lg mb-1 pr-16">${serv.nombre}</h3>
+                    <p class="text-2xl font-bold text-pineda-navy">$${serv.precio} <span class="text-sm font-normal text-slate-500">MXN</span></p>
+                `;
+                contenedor.appendChild(card);
+            });
+        }
+
+        function abrirModalServicio() {
+            document.getElementById('formNuevoUsuario')?.reset();
+            document.getElementById('servicioId').value = '';
+            document.getElementById('tituloModalServicio').innerText = 'Nuevo Servicio';
+            document.getElementById('modalServicio').classList.remove('hidden');
+        }
+
+        function cerrarModalServicio() {
+            document.getElementById('modalServicio').classList.add('hidden');
+        }
+
+        function guardarServicio(event) {
+            event.preventDefault();
+            const id = document.getElementById('servicioId').value;
+            const nombre = document.getElementById('servicioNombre').value;
+            const precio = document.getElementById('servicioPrecio').value;
+
+            if(id) {
+                // Editar existente
+                const index = doctorActual.servicios.findIndex(s => s.id == id);
+                doctorActual.servicios[index] = { id: parseInt(id), nombre, precio };
+            } else {
+                // Crear nuevo
+                doctorActual.servicios.push({ id: Date.now(), nombre, precio });
+            }
+
+            actualizarBaseDeDatos(doctorActual);
+            renderizarServicios();
+            cerrarModalServicio();
+        }
+
+        function editarServicio(id) {
+            const serv = doctorActual.servicios.find(s => s.id === id);
+            document.getElementById('servicioId').value = serv.id;
+            document.getElementById('servicioNombre').value = serv.nombre;
+            document.getElementById('servicioPrecio').value = serv.precio;
+            document.getElementById('tituloModalServicio').innerText = 'Editar Servicio';
+            document.getElementById('modalServicio').classList.remove('hidden');
+        }
+
+        function eliminarServicio(id) {
+            if(confirm("¿Estás seguro de eliminar este servicio del catálogo público?")) {
+                doctorActual.servicios = doctorActual.servicios.filter(s => s.id !== id);
+                actualizarBaseDeDatos(doctorActual);
+                renderizarServicios();
+            }
+        }
+
+        // --- 4. GESTIÓN DE PERFIL ---
+        function guardarPerfil(event) {
+            event.preventDefault();
+            doctorActual.nombre = document.getElementById('perfilNombre').value;
+            doctorActual.password = document.getElementById('perfilPassword').value;
+            doctorActual.whatsapp = document.getElementById('perfilWhatsapp').value;
+            
+            document.getElementById('sidebarNombre').innerText = doctorActual.nombre;
+            actualizarBaseDeDatos(doctorActual);
+            alert("Perfil actualizado correctamente. Los pacientes ahora verán tu nueva información.");
+        }
+
+        // --- 5. FUNCIONES GLOBALES ---
+        function actualizarBaseDeDatos(datosActualizados) {
+            // Actualizar sesión actual
+            sessionStorage.setItem('dentistaLogueado', JSON.stringify(datosActualizados));
+            
+            // Actualizar base de datos general (localStorage)
+            let dentistasBD = JSON.parse(localStorage.getItem('dentistas_pineda')) || [];
+            let index = dentistasBD.findIndex(d => d.correo === datosActualizados.correo);
+            if(index !== -1) {
+                dentistasBD[index] = datosActualizados;
+                localStorage.setItem('dentistas_pineda', JSON.stringify(dentistasBD));
+            }
         }
 
         function cerrarSesion() {
