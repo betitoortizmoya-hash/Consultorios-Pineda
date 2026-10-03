@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Dentista</title>
+    <link rel="icon" type="image/png" href="favicon.png?v=2">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-slate-50 font-sans text-slate-800 antialiased p-8">
+    
+    <div class="max-w-3xl mx-auto bg-white rounded-2xl shadow-sm border border-slate-100 p-8 text-center mt-12">
+        <i class="fa-solid fa-tooth text-[#26bad4] text-6xl mb-4"></i>
+        <h1 class="text-3xl font-bold text-[#1b365d] mb-2" id="bienvenidaNombre">Bienvenido, Doctor</h1>
+        <p class="text-slate-500 mb-8">Este es tu panel privado. Aquí pronto podrás actualizar tus precios y ver tus citas agendadas.</p>
+        
+        <button onclick="cerrarSesion()" class="bg-[#1b365d] hover:bg-slate-800 text-white px-6 py-2 rounded-lg transition-colors">
+            Cerrar Sesión
+        </button>
+    </div>
+
+    <script>
+        // Verificar quién inició sesión
+        const doctor = JSON.parse(sessionStorage.getItem('dentistaLogueado'));
+        if(!doctor) {
+            // Si nadie inició sesión, lo regresa al inicio
+            window.location.href = 'index.html';
+        } else {
+            document.getElementById('bienvenidaNombre').innerText = "Bienvenido/a, " + doctor.nombre;
+        }
+
+        function cerrarSesion() {
+            sessionStorage.removeItem('dentistaLogueado');
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>
