@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Consultorio Pineda | Panel de Dentista</title>
-    <link rel="icon" type="image/png" href="favicon.png?v=4">
+    <link rel="icon" type="image/png" href="favicon.png?v=6">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -18,7 +18,6 @@
 </head>
 <body class="bg-slate-50 font-sans text-slate-800 antialiased flex h-screen overflow-hidden">
 
-    <!-- MENÚ LATERAL -->
     <aside class="w-64 bg-pineda-navy text-white flex flex-col shadow-xl z-20">
         <div class="h-20 flex items-center justify-center border-b border-slate-700 px-6">
             <i class="fa-solid fa-tooth text-[#26bad4] text-2xl mr-3"></i>
@@ -35,33 +34,28 @@
         </div>
 
         <nav class="flex-1 px-4 py-6 space-y-2">
-            <!-- Opción: Agenda -->
-            <button onclick="switchTab('agenda')" id="btn-agenda" class="w-full flex items-center gap-3 px-4 py-3 text-slate-300 hover:bg-slate-800 hover:text-white rounded-lg font-medium transition-all tab-active">
+            <button onclick="window.switchTab('agenda')" id="btn-agenda" class="w-full flex items-center gap-3 px-4 py-3 text-slate-300 hover:bg-slate-800 hover:text-white rounded-lg font-medium transition-all tab-active">
                 <i class="fa-solid fa-calendar-days w-5"></i> Mi Agenda
             </button>
-            <!-- NUEVA Opción: Solicitudes -->
-            <button onclick="switchTab('solicitudes')" id="btn-solicitudes" class="w-full flex items-center gap-3 px-4 py-3 text-slate-300 hover:bg-slate-800 hover:text-white rounded-lg font-medium transition-all relative">
+            <button onclick="window.switchTab('solicitudes')" id="btn-solicitudes" class="w-full flex items-center gap-3 px-4 py-3 text-slate-300 hover:bg-slate-800 hover:text-white rounded-lg font-medium transition-all relative">
                 <i class="fa-solid fa-bell w-5"></i> Solicitudes
                 <span id="badgeSolicitudes" class="absolute right-4 bg-red-500 text-white text-xs px-2 py-0.5 rounded-full hidden">0</span>
             </button>
-            <!-- Opción: Servicios -->
-            <button onclick="switchTab('servicios')" id="btn-servicios" class="w-full flex items-center gap-3 px-4 py-3 text-slate-300 hover:bg-slate-800 hover:text-white rounded-lg font-medium transition-all">
+            <button onclick="window.switchTab('servicios')" id="btn-servicios" class="w-full flex items-center gap-3 px-4 py-3 text-slate-300 hover:bg-slate-800 hover:text-white rounded-lg font-medium transition-all">
                 <i class="fa-solid fa-list-check w-5"></i> Mis Servicios
             </button>
-            <!-- Opción: Perfil -->
-            <button onclick="switchTab('perfil')" id="btn-perfil" class="w-full flex items-center gap-3 px-4 py-3 text-slate-300 hover:bg-slate-800 hover:text-white rounded-lg font-medium transition-all">
+            <button onclick="window.switchTab('perfil')" id="btn-perfil" class="w-full flex items-center gap-3 px-4 py-3 text-slate-300 hover:bg-slate-800 hover:text-white rounded-lg font-medium transition-all">
                 <i class="fa-solid fa-user-gear w-5"></i> Mi Perfil
             </button>
         </nav>
 
         <div class="p-4 border-t border-slate-700">
-            <button onclick="cerrarSesion()" class="w-full flex items-center justify-center gap-2 px-4 py-2 bg-red-500/10 text-red-400 hover:text-white hover:bg-red-500 rounded-lg transition-colors text-sm font-medium">
+            <button onclick="window.cerrarSesion()" class="w-full flex items-center justify-center gap-2 px-4 py-2 bg-red-500/10 text-red-400 hover:text-white hover:bg-red-500 rounded-lg transition-colors text-sm font-medium">
                 <i class="fa-solid fa-right-from-bracket"></i> Cerrar Sesión
             </button>
         </div>
     </aside>
 
-    <!-- CONTENIDO PRINCIPAL -->
     <main class="flex-1 flex flex-col overflow-hidden bg-slate-50">
         <header class="h-20 bg-white shadow-sm flex items-center justify-between px-8 z-10 shrink-0">
             <h1 class="text-2xl font-bold text-pineda-navy" id="headerTitulo">Mi Agenda de Citas</h1>
@@ -72,16 +66,15 @@
 
         <div class="flex-1 overflow-y-auto p-8">
             
-            <!-- VISTA: AGENDA (CALENDARIO) -->
+            <!-- VISTA AGENDA -->
             <div id="vista-agenda" class="vista-panel">
                 <div class="flex justify-between items-center mb-6">
                     <h2 class="text-xl font-bold text-slate-700" id="mesAnio">Cargando Calendario...</h2>
                     <div class="flex gap-2">
-                        <button onclick="cambiarMes(-1)" class="p-2 bg-white border border-slate-200 rounded-lg hover:bg-slate-100"><i class="fa-solid fa-chevron-left"></i></button>
-                        <button onclick="cambiarMes(1)" class="p-2 bg-white border border-slate-200 rounded-lg hover:bg-slate-100"><i class="fa-solid fa-chevron-right"></i></button>
+                        <button onclick="window.cambiarMes(-1)" class="p-2 bg-white border border-slate-200 rounded-lg hover:bg-slate-100"><i class="fa-solid fa-chevron-left"></i></button>
+                        <button onclick="window.cambiarMes(1)" class="p-2 bg-white border border-slate-200 rounded-lg hover:bg-slate-100"><i class="fa-solid fa-chevron-right"></i></button>
                     </div>
                 </div>
-                <!-- Grid del Calendario -->
                 <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
                     <div class="grid grid-cols-7 bg-slate-50 border-b border-slate-200">
                         <div class="p-3 text-center font-bold text-slate-500 text-sm border-r border-slate-200">Dom</div>
@@ -92,13 +85,11 @@
                         <div class="p-3 text-center font-bold text-slate-500 text-sm border-r border-slate-200">Vie</div>
                         <div class="p-3 text-center font-bold text-slate-500 text-sm">Sáb</div>
                     </div>
-                    <div id="calendarGrid" class="grid grid-cols-7 bg-slate-200 gap-px border-b border-slate-200">
-                        <!-- JS inyectará los días y citas aquí -->
-                    </div>
+                    <div id="calendarGrid" class="grid grid-cols-7 bg-slate-200 gap-px border-b border-slate-200"></div>
                 </div>
             </div>
 
-            <!-- VISTA: SOLICITUDES PENDIENTES -->
+            <!-- VISTA SOLICITUDES -->
             <div id="vista-solicitudes" class="vista-panel hidden">
                 <div class="flex justify-between items-center mb-6">
                     <h2 class="text-lg font-bold text-slate-700">Pacientes esperando fecha</h2>
@@ -113,32 +104,28 @@
                                 <th class="px-6 py-4 font-medium text-right">Acciones</th>
                             </tr>
                         </thead>
-                        <tbody id="tablaSolicitudes" class="divide-y divide-slate-100">
-                            <!-- JS Inyectará -->
-                        </tbody>
+                        <tbody id="tablaSolicitudes" class="divide-y divide-slate-100"></tbody>
                     </table>
                 </div>
             </div>
 
-            <!-- VISTA: SERVICIOS -->
+            <!-- VISTA SERVICIOS -->
             <div id="vista-servicios" class="vista-panel hidden">
                 <div class="flex justify-between items-center mb-6">
-                    <h2 class="text-lg font-bold text-slate-700">Catálogo de Tratamientos y Trabajos</h2>
-                    <button onclick="abrirModalServicio()" class="bg-pineda-cyan hover:bg-[#1fa1b8] text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors shadow-sm flex items-center gap-2">
+                    <h2 class="text-lg font-bold text-slate-700">Catálogo de Tratamientos</h2>
+                    <button onclick="window.abrirModalServicio()" class="bg-pineda-cyan hover:bg-[#1fa1b8] text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors shadow-sm flex items-center gap-2">
                         <i class="fa-solid fa-plus"></i> Nuevo Servicio
                     </button>
                 </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="contenedorMisServicios">
-                    <!-- Tarjetas inyectadas por JS -->
-                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="contenedorMisServicios"></div>
             </div>
 
-            <!-- VISTA: PERFIL -->
+            <!-- VISTA PERFIL -->
             <div id="vista-perfil" class="vista-panel hidden">
                 <div class="max-w-2xl bg-white rounded-2xl shadow-sm border border-slate-100 p-8">
                     <h2 class="text-xl font-bold text-pineda-navy mb-6 border-b border-slate-100 pb-4">Personaliza tu Perfil Público</h2>
                     
-                    <form onsubmit="guardarPerfil(event)">
+                    <form onsubmit="window.guardarPerfil(event)">
                         <div class="flex items-center gap-6 mb-8">
                             <div class="relative w-24 h-24 rounded-full border-4 border-slate-100 overflow-hidden bg-slate-100 flex-shrink-0">
                                 <img id="previewPerfil" src="" class="w-full h-full object-cover hidden">
@@ -148,7 +135,7 @@
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-slate-700 mb-2">Foto de Perfil Profesional</label>
-                                <input type="file" id="inputFotoPerfil" accept="image/*" onchange="cargarFotoPerfil(event)" class="text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-cyan-50 file:text-pineda-cyan hover:file:bg-cyan-100 cursor-pointer">
+                                <input type="file" id="inputFotoPerfil" accept="image/*" onchange="window.cargarFotoPerfil(event)" class="text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-cyan-50 file:text-pineda-cyan hover:file:bg-cyan-100 cursor-pointer">
                             </div>
                         </div>
 
@@ -185,14 +172,14 @@
         </div>
     </main>
 
-    <!-- MODAL: ASIGNAR CITA (AGENDAR) -->
+    <!-- MODAL AGENDAR -->
     <div id="modalAgendar" class="modal hidden fixed inset-0 bg-slate-900 bg-opacity-60 z-50 flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl shadow-xl w-full max-w-sm overflow-hidden">
             <div class="bg-pineda-navy px-6 py-4 flex justify-between items-center">
                 <h2 class="text-lg font-bold text-white">Asignar Fecha</h2>
-                <button onclick="cerrarModalAgendar()" class="text-slate-300 hover:text-white text-2xl leading-none">&times;</button>
+                <button onclick="window.cerrarModalAgendar()" class="text-slate-300 hover:text-white text-2xl leading-none">&times;</button>
             </div>
-            <form onsubmit="guardarCita(event)" class="p-6 space-y-4">
+            <form onsubmit="window.guardarCita(event)" class="p-6 space-y-4">
                 <input type="hidden" id="agendarSolicitudId">
                 <div>
                     <label class="block text-sm font-medium text-slate-700 mb-1">Fecha</label>
@@ -203,21 +190,21 @@
                     <input type="time" id="agendarHora" required class="w-full px-4 py-2 border border-slate-300 rounded-lg outline-none focus:border-[#26bad4]">
                 </div>
                 <div class="pt-4 border-t border-slate-100 flex gap-2">
-                    <button type="button" onclick="cerrarModalAgendar()" class="w-full py-2 text-slate-600 hover:bg-slate-100 rounded-lg">Cancelar</button>
+                    <button type="button" onclick="window.cerrarModalAgendar()" class="w-full py-2 text-slate-600 hover:bg-slate-100 rounded-lg">Cancelar</button>
                     <button type="submit" class="w-full py-2 bg-pineda-cyan hover:bg-[#1fa1b8] text-white font-bold rounded-lg shadow-sm">Confirmar Cita</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- MODAL: SERVICIOS Y FOTOS -->
+    <!-- MODAL SERVICIO -->
     <div id="modalServicio" class="modal hidden fixed inset-0 bg-slate-900 bg-opacity-60 z-50 flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-y-auto max-h-[90vh]">
             <div class="sticky top-0 bg-pineda-navy px-6 py-4 flex justify-between items-center z-10">
                 <h2 class="text-lg font-bold text-white" id="tituloModalServicio">Nuevo Servicio</h2>
-                <button onclick="cerrarModalServicio()" class="text-slate-300 hover:text-white text-2xl leading-none">&times;</button>
+                <button onclick="window.cerrarModalServicio()" class="text-slate-300 hover:text-white text-2xl leading-none">&times;</button>
             </div>
-            <form onsubmit="guardarServicio(event)" class="p-6">
+            <form onsubmit="window.guardarServicio(event)" class="p-6">
                 <input type="hidden" id="servicioId">
                 <div class="space-y-4 mb-6">
                     <div>
@@ -230,34 +217,85 @@
                     </div>
                     <div class="pt-4 border-t border-slate-100">
                         <label class="block text-sm font-medium text-slate-700 mb-1">Evidencia / Fotos del Trabajo</label>
-                        <input type="file" id="inputFotosServicio" accept="image/*" multiple onchange="cargarFotosServicio(event)" class="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-cyan-50 file:text-pineda-cyan hover:file:bg-cyan-100 cursor-pointer mb-2">
+                        <input type="file" id="inputFotosServicio" accept="image/*" multiple onchange="window.cargarFotosServicio(event)" class="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-cyan-50 file:text-pineda-cyan hover:file:bg-cyan-100 cursor-pointer mb-2">
                         <div id="galeriaServicio" class="flex gap-2 flex-wrap mt-2"></div>
                     </div>
                 </div>
                 <div class="flex items-center justify-end gap-3 pt-4 border-t border-slate-100">
-                    <button type="button" onclick="cerrarModalServicio()" class="px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-lg">Cancelar</button>
+                    <button type="button" onclick="window.cerrarModalServicio()" class="px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-lg">Cancelar</button>
                     <button type="submit" class="px-4 py-2 bg-pineda-cyan hover:bg-[#1fa1b8] text-white font-bold rounded-lg shadow-sm">Guardar Servicio</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <script>
-        let doctorActual = JSON.parse(sessionStorage.getItem('dentistaLogueado'));
-        if(!doctorActual) window.location.href = 'index.html';
+    <!-- SCRIPT DE FIREBASE -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
+        import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-firestore.js";
 
-        // Asegurar que existan todos los arreglos
-        if(!doctorActual.servicios) doctorActual.servicios = [];
-        if(!doctorActual.solicitudes) doctorActual.solicitudes = [];
-        if(!doctorActual.citas) doctorActual.citas = [];
-        
-        let fotosTemporalesServicio = [];
-        let fotoPerfilTemporal = doctorActual.fotoPerfil || null;
-        
-        // Variables para el Calendario
-        let fechaNavegacion = new Date();
+        const firebaseConfig = {
+            apiKey: "AIzaSyCSvx5Ra5FMtOyfGQCLMUwthGnLXiQE5Ts",
+            authDomain: "pineda-consultorios.firebaseapp.com",
+            projectId: "pineda-consultorios",
+            storageBucket: "pineda-consultorios.firebasestorage.app",
+            messagingSenderId: "867106565273",
+            appId: "1:867106565273:web:a9d98a7a36b522cbd7dc08"
+        };
 
-        function comprimirImagen(file, maxResolucion) {
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // Uso de localStorage para evitar que la sesión se borre inesperadamente
+        window.dentistaId = localStorage.getItem('pineda_dentista_id');
+        
+        window.doctorActual = null;
+        window.fotosTemporalesServicio = [];
+        window.fotoPerfilTemporal = null;
+        window.fechaNavegacion = new Date();
+
+        // Si no hay ID guardado, se muestra una alerta y se regresa al index
+        if(!window.dentistaId) {
+            alert("Error: No se detectó una sesión activa. Por favor, inicia sesión de nuevo.");
+            window.location.href = 'index.html';
+        }
+
+        // Cargar los datos desde Firebase
+        window.cargarDatosNube = async function() {
+            if(!window.dentistaId) return; // Detener si no hay ID
+            
+            try {
+                const docSnap = await getDoc(doc(db, "dentistas", window.dentistaId));
+                if (docSnap.exists()) {
+                    window.doctorActual = docSnap.data();
+                    
+                    // Asegurar arreglos
+                    if(!window.doctorActual.servicios) window.doctorActual.servicios = [];
+                    if(!window.doctorActual.solicitudes) window.doctorActual.solicitudes = [];
+                    if(!window.doctorActual.citas) window.doctorActual.citas = [];
+                    
+                    window.inicializarPanel();
+                } else {
+                    alert("Error: El perfil de dentista no se encontró en la nube. Puede que el administrador lo haya eliminado.");
+                    localStorage.removeItem('pineda_dentista_id');
+                    window.location.href = 'index.html';
+                }
+            } catch(e) {
+                console.error("Error al cargar de Firebase:", e);
+                alert("Error de conexión con la base de datos.");
+            }
+        };
+
+        window.actualizarBaseDeDatos = async function(datos) {
+            try {
+                await updateDoc(doc(db, "dentistas", window.dentistaId), datos);
+            } catch(e) {
+                console.error(e);
+                alert("Hubo un problema guardando en la nube.");
+            }
+        };
+
+        window.comprimirImagen = function(file, maxResolucion) {
             return new Promise((resolve) => {
                 const reader = new FileReader();
                 reader.readAsDataURL(file);
@@ -275,33 +313,33 @@
                     };
                 };
             });
-        }
+        };
 
-        function inicializarPanel() {
-            document.getElementById('sidebarNombre').innerText = doctorActual.nombre;
-            document.getElementById('sidebarEspecialidad').innerText = doctorActual.especialidad;
+        window.inicializarPanel = function() {
+            document.getElementById('sidebarNombre').innerText = window.doctorActual.nombre;
+            document.getElementById('sidebarEspecialidad').innerText = window.doctorActual.especialidad;
             
-            document.getElementById('perfilNombre').value = doctorActual.nombre;
-            document.getElementById('perfilEspecialidad').value = doctorActual.especialidad;
-            document.getElementById('perfilPassword').value = doctorActual.password;
-            document.getElementById('perfilWhatsapp').value = doctorActual.whatsapp || "";
+            document.getElementById('perfilNombre').value = window.doctorActual.nombre;
+            document.getElementById('perfilEspecialidad').value = window.doctorActual.especialidad;
+            document.getElementById('perfilPassword').value = window.doctorActual.password;
+            document.getElementById('perfilWhatsapp').value = window.doctorActual.whatsapp || "";
 
-            if(doctorActual.fotoPerfil) {
-                document.getElementById('sidebarFoto').src = doctorActual.fotoPerfil;
+            if(window.doctorActual.fotoPerfil) {
+                document.getElementById('sidebarFoto').src = window.doctorActual.fotoPerfil;
                 document.getElementById('sidebarFoto').classList.remove('hidden');
                 document.getElementById('sidebarIcono').classList.add('hidden');
-                document.getElementById('previewPerfil').src = doctorActual.fotoPerfil;
+                document.getElementById('previewPerfil').src = window.doctorActual.fotoPerfil;
                 document.getElementById('previewPerfil').classList.remove('hidden');
                 document.getElementById('placeholderPerfil').classList.add('hidden');
             }
 
             setInterval(() => { document.getElementById('reloj').innerText = new Date().toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' }); }, 1000);
             
-            actualizarBadgeSolicitudes();
-            renderCalendario();
-        }
+            window.actualizarBadgeSolicitudes();
+            window.renderCalendario();
+        };
 
-        function switchTab(tabId) {
+        window.switchTab = function(tabId) {
             document.querySelectorAll('.vista-panel').forEach(el => el.classList.add('hidden'));
             document.querySelectorAll('[id^="btn-"]').forEach(el => {
                 el.classList.remove('tab-active', 'bg-[#f8fafc]', 'text-[#26bad4]');
@@ -315,53 +353,43 @@
             const titulos = { 'agenda': 'Mi Agenda de Citas', 'solicitudes': 'Solicitudes Entrantes', 'servicios': 'Gestión de Servicios', 'perfil': 'Mi Perfil' };
             document.getElementById('headerTitulo').innerText = titulos[tabId];
 
-            if(tabId === 'servicios') renderizarServicios();
-            if(tabId === 'solicitudes') renderSolicitudes();
-            if(tabId === 'agenda') renderCalendario();
-        }
+            if(tabId === 'servicios') window.renderizarServicios();
+            if(tabId === 'solicitudes') window.renderSolicitudes();
+            if(tabId === 'agenda') window.renderCalendario();
+        };
 
-        // --- CALENDARIO INTERACTIVO ---
-        function cambiarMes(movimiento) {
-            fechaNavegacion.setMonth(fechaNavegacion.getMonth() + movimiento);
-            renderCalendario();
-        }
+        window.cambiarMes = function(movimiento) {
+            window.fechaNavegacion.setMonth(window.fechaNavegacion.getMonth() + movimiento);
+            window.renderCalendario();
+        };
 
-        function renderCalendario() {
-            const mes = fechaNavegacion.getMonth();
-            const anio = fechaNavegacion.getFullYear();
+        window.renderCalendario = function() {
+            const mes = window.fechaNavegacion.getMonth();
+            const anio = window.fechaNavegacion.getFullYear();
             const meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
             
             document.getElementById('mesAnio').innerText = `${meses[mes]} ${anio}`;
             
-            const primerDia = new Date(anio, mes, 1).getDay(); // 0 (Dom) a 6 (Sab)
+            const primerDia = new Date(anio, mes, 1).getDay();
             const diasEnMes = new Date(anio, mes + 1, 0).getDate();
             const grid = document.getElementById('calendarGrid');
             grid.innerHTML = '';
 
-            // Celdas vacías previas
-            for(let i = 0; i < primerDia; i++) {
-                grid.innerHTML += `<div class="bg-slate-100 p-2 min-h-[120px]"></div>`;
-            }
+            for(let i = 0; i < primerDia; i++) grid.innerHTML += `<div class="bg-slate-100 p-2 min-h-[120px]"></div>`;
 
             const hoy = new Date();
 
-            // Días del mes
             for(let dia = 1; dia <= diasEnMes; dia++) {
                 let fechaISO = `${anio}-${String(mes+1).padStart(2,'0')}-${String(dia).padStart(2,'0')}`;
-                
-                // Buscar citas de este día
                 let citasHtml = '';
-                let citasDelDia = doctorActual.citas.filter(c => c.fecha === fechaISO);
+                let citasDelDia = window.doctorActual.citas.filter(c => c.fecha === fechaISO);
                 
-                // Ordenar por hora
                 citasDelDia.sort((a,b) => a.hora.localeCompare(b.hora));
 
                 citasDelDia.forEach(cita => {
-                    // Cita con Tooltip (Hover)
                     citasHtml += `
                         <div class="mt-1 bg-pineda-cyan hover:bg-[#1fa1b8] text-white text-xs p-1.5 rounded cursor-pointer relative group transition-colors shadow-sm">
                             <div class="font-bold truncate">${cita.hora} - ${cita.paciente}</div>
-                            <!-- Globo de información (Tooltip) -->
                             <div class="hidden group-hover:block absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-48 bg-slate-800 text-white p-3 rounded-lg z-50 text-left text-xs shadow-xl pointer-events-none">
                                 <p class="font-bold text-sm mb-1 text-pineda-cyan truncate">${cita.paciente}</p>
                                 <p><i class="fa-brands fa-whatsapp text-emerald-400"></i> ${cita.whatsapp}</p>
@@ -384,29 +412,28 @@
                     </div>
                 `;
             }
-        }
+        };
 
-        // --- SISTEMA DE SOLICITUDES ---
-        function actualizarBadgeSolicitudes() {
+        window.actualizarBadgeSolicitudes = function() {
             const badge = document.getElementById('badgeSolicitudes');
-            if(doctorActual.solicitudes && doctorActual.solicitudes.length > 0) {
-                badge.innerText = doctorActual.solicitudes.length;
+            if(window.doctorActual.solicitudes && window.doctorActual.solicitudes.length > 0) {
+                badge.innerText = window.doctorActual.solicitudes.length;
                 badge.classList.remove('hidden');
             } else {
                 badge.classList.add('hidden');
             }
-        }
+        };
 
-        function renderSolicitudes() {
+        window.renderSolicitudes = function() {
             const tbody = document.getElementById('tablaSolicitudes');
             tbody.innerHTML = '';
             
-            if(doctorActual.solicitudes.length === 0) {
+            if(window.doctorActual.solicitudes.length === 0) {
                 tbody.innerHTML = `<tr><td colspan="4" class="px-6 py-8 text-center text-slate-500">No hay pacientes esperando citas.</td></tr>`;
                 return;
             }
 
-            doctorActual.solicitudes.forEach(sol => {
+            window.doctorActual.solicitudes.forEach(sol => {
                 tbody.innerHTML += `
                     <tr class="hover:bg-slate-50 transition-colors">
                         <td class="px-6 py-4 font-bold text-slate-800">${sol.paciente}</td>
@@ -416,37 +443,35 @@
                         </td>
                         <td class="px-6 py-4 text-slate-600 font-medium">${sol.servicio}</td>
                         <td class="px-6 py-4 text-right">
-                            <button onclick="abrirModalAgendar(${sol.id})" class="bg-pineda-navy hover:bg-[#122543] text-white px-3 py-1.5 rounded-lg text-sm font-semibold transition-colors">
-                                <i class="fa-solid fa-calendar-plus"></i> Asignar Cita
+                            <button onclick="window.abrirModalAgendar(${sol.id})" class="bg-pineda-navy hover:bg-[#122543] text-white px-3 py-1.5 rounded-lg text-sm font-semibold transition-colors">
+                                <i class="fa-solid fa-calendar-plus"></i> Asignar
                             </button>
                         </td>
                     </tr>
                 `;
             });
-        }
+        };
 
-        function abrirModalAgendar(id) {
+        window.abrirModalAgendar = function(id) {
             document.getElementById('agendarSolicitudId').value = id;
             document.getElementById('agendarFecha').value = '';
             document.getElementById('agendarHora').value = '';
             document.getElementById('modalAgendar').classList.remove('hidden');
-        }
-        function cerrarModalAgendar() {
+        };
+        window.cerrarModalAgendar = function() {
             document.getElementById('modalAgendar').classList.add('hidden');
-        }
+        };
 
-        function guardarCita(event) {
+        window.guardarCita = async function(event) {
             event.preventDefault();
             const solId = parseInt(document.getElementById('agendarSolicitudId').value);
             const fecha = document.getElementById('agendarFecha').value;
             const hora = document.getElementById('agendarHora').value;
 
-            // Extraer la solicitud de la lista
-            const index = doctorActual.solicitudes.findIndex(s => s.id === solId);
-            const solicitud = doctorActual.solicitudes[index];
+            const index = window.doctorActual.solicitudes.findIndex(s => s.id === solId);
+            const solicitud = window.doctorActual.solicitudes[index];
 
-            // Pasarla a Citas
-            doctorActual.citas.push({
+            window.doctorActual.citas.push({
                 id: Date.now(),
                 paciente: solicitud.paciente,
                 whatsapp: solicitud.whatsapp,
@@ -454,50 +479,46 @@
                 fecha: fecha,
                 hora: hora
             });
+            window.doctorActual.solicitudes.splice(index, 1);
 
-            // Borrar de Solicitudes
-            doctorActual.solicitudes.splice(index, 1);
+            await window.actualizarBaseDeDatos(window.doctorActual);
+            window.actualizarBadgeSolicitudes();
+            window.renderSolicitudes();
+            window.cerrarModalAgendar();
+            alert("¡Cita asignada! Ya está sincronizada en tu calendario en la nube.");
+        };
 
-            actualizarBaseDeDatos(doctorActual);
-            actualizarBadgeSolicitudes();
-            renderSolicitudes();
-            cerrarModalAgendar();
-            alert("¡Cita agendada correctamente! Ya aparecerá en tu calendario.");
-        }
-
-        // --- PERFIL Y FOTO ---
-        async function cargarFotoPerfil(event) {
+        window.cargarFotoPerfil = async function(event) {
             const file = event.target.files[0];
             if(file) {
-                fotoPerfilTemporal = await comprimirImagen(file, 400);
-                document.getElementById('previewPerfil').src = fotoPerfilTemporal;
+                window.fotoPerfilTemporal = await window.comprimirImagen(file, 400);
+                document.getElementById('previewPerfil').src = window.fotoPerfilTemporal;
                 document.getElementById('previewPerfil').classList.remove('hidden');
                 document.getElementById('placeholderPerfil').classList.add('hidden');
             }
-        }
+        };
 
-        function guardarPerfil(event) {
+        window.guardarPerfil = async function(event) {
             event.preventDefault();
-            doctorActual.nombre = document.getElementById('perfilNombre').value;
-            doctorActual.especialidad = document.getElementById('perfilEspecialidad').value;
-            doctorActual.password = document.getElementById('perfilPassword').value;
-            doctorActual.whatsapp = document.getElementById('perfilWhatsapp').value;
-            if(fotoPerfilTemporal) doctorActual.fotoPerfil = fotoPerfilTemporal;
+            window.doctorActual.nombre = document.getElementById('perfilNombre').value;
+            window.doctorActual.especialidad = document.getElementById('perfilEspecialidad').value;
+            window.doctorActual.password = document.getElementById('perfilPassword').value;
+            window.doctorActual.whatsapp = document.getElementById('perfilWhatsapp').value;
+            if(window.fotoPerfilTemporal) window.doctorActual.fotoPerfil = window.fotoPerfilTemporal;
             
-            actualizarBaseDeDatos(doctorActual);
-            inicializarPanel();
-            alert("Perfil actualizado correctamente.");
-        }
+            await window.actualizarBaseDeDatos(window.doctorActual);
+            window.inicializarPanel();
+            alert("Perfil guardado en la nube.");
+        };
 
-        // --- SERVICIOS ---
-        function renderizarServicios() {
+        window.renderizarServicios = function() {
             const contenedor = document.getElementById('contenedorMisServicios');
             contenedor.innerHTML = '';
-            if(doctorActual.servicios.length === 0) {
+            if(window.doctorActual.servicios.length === 0) {
                 contenedor.innerHTML = `<p class="col-span-full text-slate-500 text-center py-8">No tienes servicios registrados.</p>`;
                 return;
             }
-            doctorActual.servicios.forEach(serv => {
+            window.doctorActual.servicios.forEach(serv => {
                 let galeria = '';
                 if(serv.fotos && serv.fotos.length > 0) {
                     galeria = `<div class="flex gap-1 mt-3 overflow-x-auto pb-2 scrollbar-hide">`;
@@ -508,8 +529,8 @@
                 card.className = "bg-white border border-slate-200 rounded-xl p-5 shadow-sm hover:shadow-md transition-shadow relative group";
                 card.innerHTML = `
                     <div class="absolute top-4 right-4 flex gap-2">
-                        <button onclick="editarServicio(${serv.id})" class="w-8 h-8 rounded-full bg-slate-100 text-slate-600 hover:text-pineda-cyan flex items-center justify-center"><i class="fa-solid fa-pen text-sm"></i></button>
-                        <button onclick="eliminarServicio(${serv.id})" class="w-8 h-8 rounded-full bg-slate-100 text-slate-600 hover:text-red-500 flex items-center justify-center"><i class="fa-solid fa-trash text-sm"></i></button>
+                        <button onclick="window.editarServicio(${serv.id})" class="w-8 h-8 rounded-full bg-slate-100 text-slate-600 hover:text-pineda-cyan flex items-center justify-center"><i class="fa-solid fa-pen text-sm"></i></button>
+                        <button onclick="window.eliminarServicio(${serv.id})" class="w-8 h-8 rounded-full bg-slate-100 text-slate-600 hover:text-red-500 flex items-center justify-center"><i class="fa-solid fa-trash text-sm"></i></button>
                     </div>
                     <div class="w-10 h-10 bg-cyan-50 text-pineda-cyan rounded-lg flex items-center justify-center text-lg mb-3"><i class="fa-solid fa-tooth"></i></div>
                     <h3 class="font-bold text-slate-800 text-lg mb-1 pr-16">${serv.nombre}</h3>
@@ -518,38 +539,38 @@
                 `;
                 contenedor.appendChild(card);
             });
-        }
+        };
 
-        async function cargarFotosServicio(event) {
+        window.cargarFotosServicio = async function(event) {
             for(let file of Array.from(event.target.files)) {
-                const base64 = await comprimirImagen(file, 600);
-                fotosTemporalesServicio.push(base64);
+                const base64 = await window.comprimirImagen(file, 600);
+                window.fotosTemporalesServicio.push(base64);
                 const img = document.createElement('img');
                 img.src = base64;
                 img.className = "w-16 h-16 rounded-md object-cover border border-slate-200 shadow-sm";
                 document.getElementById('galeriaServicio').appendChild(img);
             }
-        }
+        };
 
-        function abrirModalServicio() {
+        window.abrirModalServicio = function() {
             document.getElementById('servicioId').value = '';
             document.getElementById('servicioNombre').value = '';
             document.getElementById('servicioPrecio').value = '';
             document.getElementById('inputFotosServicio').value = '';
             document.getElementById('galeriaServicio').innerHTML = '';
-            fotosTemporalesServicio = [];
+            window.fotosTemporalesServicio = [];
             document.getElementById('tituloModalServicio').innerText = 'Nuevo Servicio';
             document.getElementById('modalServicio').classList.remove('hidden');
-        }
+        };
 
-        function editarServicio(id) {
-            const serv = doctorActual.servicios.find(s => s.id === id);
+        window.editarServicio = function(id) {
+            const serv = window.doctorActual.servicios.find(s => s.id === id);
             document.getElementById('servicioId').value = serv.id;
             document.getElementById('servicioNombre').value = serv.nombre;
             document.getElementById('servicioPrecio').value = serv.precio;
             document.getElementById('galeriaServicio').innerHTML = '';
-            fotosTemporalesServicio = serv.fotos ? [...serv.fotos] : [];
-            fotosTemporalesServicio.forEach(foto => {
+            window.fotosTemporalesServicio = serv.fotos ? [...serv.fotos] : [];
+            window.fotosTemporalesServicio.forEach(foto => {
                 const img = document.createElement('img');
                 img.src = foto;
                 img.className = "w-16 h-16 rounded-md object-cover border border-slate-200 shadow-sm";
@@ -557,50 +578,40 @@
             });
             document.getElementById('tituloModalServicio').innerText = 'Editar Servicio';
             document.getElementById('modalServicio').classList.remove('hidden');
-        }
+        };
 
-        function guardarServicio(event) {
+        window.guardarServicio = async function(event) {
             event.preventDefault();
             const id = document.getElementById('servicioId').value;
             const nombre = document.getElementById('servicioNombre').value;
             const precio = document.getElementById('servicioPrecio').value;
             if(id) {
-                const index = doctorActual.servicios.findIndex(s => s.id == id);
-                doctorActual.servicios[index] = { id: parseInt(id), nombre, precio, fotos: fotosTemporalesServicio };
+                const index = window.doctorActual.servicios.findIndex(s => s.id == id);
+                window.doctorActual.servicios[index] = { id: parseInt(id), nombre, precio, fotos: window.fotosTemporalesServicio };
             } else {
-                doctorActual.servicios.push({ id: Date.now(), nombre, precio, fotos: fotosTemporalesServicio });
+                window.doctorActual.servicios.push({ id: Date.now(), nombre, precio, fotos: window.fotosTemporalesServicio });
             }
-            actualizarBaseDeDatos(doctorActual);
-            renderizarServicios();
-            cerrarModalServicio();
-        }
+            await window.actualizarBaseDeDatos(window.doctorActual);
+            window.renderizarServicios();
+            window.cerrarModalServicio();
+        };
 
-        function eliminarServicio(id) {
+        window.eliminarServicio = async function(id) {
             if(confirm("¿Eliminar este servicio del catálogo público?")) {
-                doctorActual.servicios = doctorActual.servicios.filter(s => s.id !== id);
-                actualizarBaseDeDatos(doctorActual);
-                renderizarServicios();
+                window.doctorActual.servicios = window.doctorActual.servicios.filter(s => s.id !== id);
+                await window.actualizarBaseDeDatos(window.doctorActual);
+                window.renderizarServicios();
             }
-        }
+        };
 
-        function cerrarModalServicio() { document.getElementById('modalServicio').classList.add('hidden'); }
+        window.cerrarModalServicio = function() { document.getElementById('modalServicio').classList.add('hidden'); };
 
-        function actualizarBaseDeDatos(datos) {
-            sessionStorage.setItem('dentistaLogueado', JSON.stringify(datos));
-            let dentistasBD = JSON.parse(localStorage.getItem('dentistas_pineda')) || [];
-            let index = dentistasBD.findIndex(d => d.correo === datos.correo);
-            if(index !== -1) {
-                dentistasBD[index] = datos;
-                localStorage.setItem('dentistas_pineda', JSON.stringify(dentistasBD));
-            }
-        }
-
-        function cerrarSesion() {
-            sessionStorage.removeItem('dentistaLogueado');
+        window.cerrarSesion = function() {
+            localStorage.removeItem('pineda_dentista_id');
             window.location.href = 'index.html';
-        }
+        };
 
-        document.addEventListener('DOMContentLoaded', inicializarPanel);
+        document.addEventListener('DOMContentLoaded', window.cargarDatosNube);
     </script>
 </body>
 </html>
