@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Consultorio Pineda | Panel de Administración</title>
-    <link rel="icon" type="image/png" href="favicon.png?v=2">
+    <link rel="icon" type="image/png" href="favicon.png?v=4">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -36,7 +36,7 @@
 
     <main class="flex-1 flex flex-col overflow-hidden">
         <header class="h-20 bg-white shadow-sm flex items-center justify-between px-8 z-10">
-            <h1 class="text-2xl font-bold text-pineda-navy">Dentistas Registrados</h1>
+            <h1 class="text-2xl font-bold text-pineda-navy">Dentistas Registrados (Nube)</h1>
             <button onclick="toggleModal('createUserModal')" class="bg-pineda-cyan hover:bg-[#1fa1b8] text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors shadow-sm flex items-center gap-2">
                 <i class="fa-solid fa-plus"></i> Crear Usuario
             </button>
@@ -55,7 +55,7 @@
                             </tr>
                         </thead>
                         <tbody id="cuerpoTabla" class="divide-y divide-slate-100">
-                            <!-- JS Inyectará los datos aquí -->
+                            <tr><td colspan="4" class="text-center py-8 text-slate-500">Conectando con la base de datos...</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -112,7 +112,7 @@
 
                 <div class="flex items-center justify-end gap-3 pt-4">
                     <button type="button" onclick="toggleModal('createUserModal')" class="px-5 py-2.5 text-slate-600 font-medium hover:bg-slate-100 rounded-lg transition-colors">Cancelar</button>
-                    <button type="submit" class="px-5 py-2.5 bg-pineda-cyan hover:bg-[#1fa1b8] text-white font-bold rounded-lg transition-colors shadow-md">
+                    <button type="submit" id="btnGuardar" class="px-5 py-2.5 bg-pineda-cyan hover:bg-[#1fa1b8] text-white font-bold rounded-lg transition-colors shadow-md">
                         Guardar Dentista
                     </button>
                 </div>
@@ -120,65 +120,115 @@
         </div>
     </div>
 
-    <script>
-        // Array principal en memoria
-        let dentistas = JSON.parse(localStorage.getItem('dentistas_pineda')) || [];
+    <!-- CONEXIÓN CON FIREBASE -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
+        import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-firestore.js";
 
-        function renderizarTabla() {
+        // Tus credenciales extraídas de tu imagen
+        const firebaseConfig = {
+            apiKey: "AIzaSyCSvx5Ra5FMtOyfGQCLMUwthGnLXiQE5Ts",
+            authDomain: "pineda-consultorios.firebaseapp.com",
+            projectId: "pineda-consultorios",
+            storageBucket: "pineda-consultorios.firebasestorage.app",
+            messagingSenderId: "867106565273",
+            appId: "1:867106565273:web:a9d98a7a36b522cbd7dc08"
+        };
+
+        // Inicializar Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // FUNCIÓN: Leer dentistas de la base de datos
+        async function renderizarTabla() {
             const tbody = document.getElementById('cuerpoTabla');
-            tbody.innerHTML = '';
+            tbody.innerHTML = '<tr><td colspan="4" class="text-center py-8 text-slate-500"><i class="fa-solid fa-spinner fa-spin mr-2"></i> Cargando datos...</td></tr>';
 
-            dentistas.forEach((dentista, index) => {
-                const fila = document.createElement('tr');
-                fila.className = "hover:bg-slate-50 transition-colors";
-                fila.innerHTML = `
-                    <td class="px-6 py-4">
-                        <p class="font-bold text-slate-800">${dentista.nombre}</p>
-                        <p class="text-sm text-slate-500">${dentista.correo}</p>
-                    </td>
-                    <td class="px-6 py-4 text-slate-600">${dentista.especialidad}</td>
-                    <td class="px-6 py-4 text-slate-600 font-mono text-sm">${dentista.password}</td>
-                    <td class="px-6 py-4 text-right space-x-2">
-                        <button onclick="eliminarDentista(${index})" class="text-slate-400 hover:text-red-500 transition-colors" title="Eliminar"><i class="fa-solid fa-ban"></i></button>
-                    </td>
-                `;
-                tbody.appendChild(fila);
-            });
+            try {
+                const querySnapshot = await getDocs(collection(db, "dentistas"));
+                tbody.innerHTML = '';
+                
+                if (querySnapshot.empty) {
+                    tbody.innerHTML = '<tr><td colspan="4" class="text-center py-8 text-slate-500">No hay dentistas registrados.</td></tr>';
+                    return;
+                }
+
+                querySnapshot.forEach((documento) => {
+                    const dentista = documento.data();
+                    const fila = document.createElement('tr');
+                    fila.className = "hover:bg-slate-50 transition-colors";
+                    fila.innerHTML = `
+                        <td class="px-6 py-4">
+                            <p class="font-bold text-slate-800">${dentista.nombre}</p>
+                            <p class="text-sm text-slate-500">${dentista.correo}</p>
+                        </td>
+                        <td class="px-6 py-4 text-slate-600">${dentista.especialidad}</td>
+                        <td class="px-6 py-4 text-slate-600 font-mono text-sm">${dentista.password}</td>
+                        <td class="px-6 py-4 text-right space-x-2">
+                            <button onclick="eliminarDentista('${documento.id}')" class="text-slate-400 hover:text-red-500 transition-colors" title="Eliminar"><i class="fa-solid fa-ban"></i></button>
+                        </td>
+                    `;
+                    tbody.appendChild(fila);
+                });
+            } catch (error) {
+                console.error("Error al cargar: ", error);
+                tbody.innerHTML = '<tr><td colspan="4" class="text-center py-8 text-red-500">Error al conectar con la base de datos. Verifica que Firestore esté en "Modo Prueba".</td></tr>';
+            }
         }
 
-        function toggleModal(modalID) {
+        // Exponer funciones globales para que los botones de HTML las detecten
+        window.toggleModal = function(modalID) {
             const modal = document.getElementById(modalID);
             modal.classList.toggle('hidden');
             if (modal.classList.contains('hidden')) document.getElementById('formNuevoUsuario').reset();
-        }
+        };
 
-        function registrarUsuario(event) {
+        window.registrarUsuario = async function(event) {
             event.preventDefault();
+            const btn = document.getElementById('btnGuardar');
+            btn.innerText = "Guardando...";
+            btn.disabled = true;
+
             const nuevoDentista = {
                 nombre: document.getElementById('inputNombre').value,
                 correo: document.getElementById('inputCorreo').value,
                 especialidad: document.getElementById('inputEspecialidad').value,
                 password: document.getElementById('inputPassword').value,
-                servicio1Nombre: document.getElementById('s1Nombre').value,
-                servicio1Precio: document.getElementById('s1Precio').value,
-                servicio2Nombre: document.getElementById('s2Nombre').value,
-                servicio2Precio: document.getElementById('s2Precio').value
+                servicios: [
+                    { id: Date.now(), nombre: document.getElementById('s1Nombre').value, precio: document.getElementById('s1Precio').value, fotos: [] },
+                    { id: Date.now() + 1, nombre: document.getElementById('s2Nombre').value, precio: document.getElementById('s2Precio').value, fotos: [] }
+                ],
+                citas: [],
+                solicitudes: [],
+                whatsapp: "",
+                fotoPerfil: null
             };
 
-            dentistas.push(nuevoDentista);
-            localStorage.setItem('dentistas_pineda', JSON.stringify(dentistas));
-            renderizarTabla();
-            toggleModal('createUserModal');
-        }
-
-        function eliminarDentista(index) {
-            if(confirm("¿Estás seguro de eliminar este dentista? Desaparecerá de la página principal.")) {
-                dentistas.splice(index, 1);
-                localStorage.setItem('dentistas_pineda', JSON.stringify(dentistas));
-                renderizarTabla();
+            try {
+                await addDoc(collection(db, "dentistas"), nuevoDentista);
+                await renderizarTabla();
+                window.toggleModal('createUserModal');
+            } catch (error) {
+                console.error("Error al guardar: ", error);
+                alert("Error al guardar en la nube. Revisa la consola.");
             }
-        }
+            
+            btn.innerText = "Guardar Dentista";
+            btn.disabled = false;
+        };
 
+        window.eliminarDentista = async function(id) {
+            if(confirm("¿Estás seguro de eliminar este dentista por completo de la nube?")) {
+                try {
+                    await deleteDoc(doc(db, "dentistas", id));
+                    await renderizarTabla();
+                } catch (error) {
+                    console.error("Error eliminando: ", error);
+                }
+            }
+        };
+
+        // Cargar datos al iniciar
         document.addEventListener('DOMContentLoaded', renderizarTabla);
     </script>
 </body>
