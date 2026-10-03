@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consultorio Pineda | Gestión Dental Profesional</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .modal { transition: opacity 0.3s ease; }
+        .bg-pineda-cyan { background-color: #26bad4; }
+        .text-pineda-cyan { color: #26bad4; }
+        .bg-pineda-navy { background-color: #1b365d; }
+        .text-pineda-navy { color: #1b365d; }
+    </style>
+</head>
+<body class="bg-slate-50 font-sans text-slate-800 antialiased">
+
+    <!-- BARRA DE NAVEGACIÓN -->
+    <nav class="bg-white shadow-sm sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-20 items-center">
+                <div class="flex-shrink-0 flex items-center gap-2">
+                    <img src="image_a55d46.jpg" alt="Logo Consultorio Pineda" class="h-14 w-auto object-contain">
+                </div>
+                <button onclick="toggleModal('loginModal')" class="text-pineda-navy hover:text-pineda-cyan font-semibold px-4 py-2 rounded-md transition-colors flex items-center gap-2">
+                    <i class="fa-solid fa-user-lock"></i> Acceso Personal
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- CABECERA (HERO) CON ESLOGAN -->
+    <header class="bg-pineda-navy text-white text-center py-16 px-4 border-b-4 border-[#26bad4]">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-4">Consultorio Pineda</h1>
+        <p class="text-xl md:text-2xl font-medium text-slate-200 mb-6 italic">"Sonrisas de primera, sin dolor de muela."</p>
+        <p class="text-lg md:text-xl text-slate-300 max-w-2xl mx-auto">Selecciona a uno de nuestros profesionales para ver sus servicios y agendar tu cita al instante.</p>
+    </header>
+
+    <!-- CATÁLOGO DE DENTISTAS -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden hover:shadow-lg transition-shadow cursor-pointer group" onclick="openDentistModal('Dra. Ana López', 'Ortodoncia y Estética')">
+                <div class="h-48 bg-slate-200 overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&w=600&q=80" alt="Dra. Ana" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                </div>
+                <div class="p-6 text-center">
+                    <h3 class="text-xl font-bold text-pineda-navy">Dra. Ana López</h3>
+                    <p class="text-pineda-cyan font-medium mb-4">Ortodoncia y Estética</p>
+                    <span class="inline-block bg-cyan-50 text-pineda-cyan rounded-full px-4 py-2 text-sm font-semibold border border-cyan-100">Ver servicios y agendar</span>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden hover:shadow-lg transition-shadow cursor-pointer group" onclick="openDentistModal('Dr. Carlos Ruiz', 'Endodoncia e Implantes')">
+                <div class="h-48 bg-slate-200 overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&w=600&q=80" alt="Dr. Carlos" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                </div>
+                <div class="p-6 text-center">
+                    <h3 class="text-xl font-bold text-pineda-navy">Dr. Carlos Ruiz</h3>
+                    <p class="text-pineda-cyan font-medium mb-4">Endodoncia e Implantes</p>
+                    <span class="inline-block bg-cyan-50 text-pineda-cyan rounded-full px-4 py-2 text-sm font-semibold border border-cyan-100">Ver servicios y agendar</span>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- MODAL: SERVICIOS Y CAPTURA DE DATOS -->
+    <div id="dentistModal" class="modal hidden fixed inset-0 bg-slate-900 bg-opacity-60 z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+            <div class="sticky top-0 bg-white border-b border-slate-100 px-6 py-4 flex justify-between items-center z-10">
+                <h2 id="modalDentistName" class="text-2xl font-bold text-pineda-navy">Nombre Dentista</h2>
+                <button onclick="toggleModal('dentistModal')" class="text-slate-400 hover:text-pineda-cyan text-2xl leading-none">&times;</button>
+            </div>
+            
+            <div class="p-6">
+                <p id="modalDentistSpec" class="text-pineda-cyan font-medium mb-6">Especialidad</p>
+                <h3 class="text-lg font-bold mb-4 text-slate-700">Selecciona un servicio:</h3>
+                
+                <div class="space-y-3 mb-8">
+                    <label class="flex justify-between items-center p-4 border border-slate-200 rounded-xl cursor-pointer hover:bg-slate-50 transition-colors">
+                        <div class="flex items-center gap-3">
+                            <input type="radio" name="servicio" class="w-5 h-5 accent-[#26bad4]" onchange="showForm('$1,200 MXN')">
+                            <span class="font-semibold text-slate-700">Limpieza Dental Ultrasónica</span>
+                        </div>
+                        <span class="text-slate-500 text-sm">Ver precio</span>
+                    </label>
+                    <label class="flex justify-between items-center p-4 border border-slate-200 rounded-xl cursor-pointer hover:bg-slate-50 transition-colors">
+                        <div class="flex items-center gap-3">
+                            <input type="radio" name="servicio" class="w-5 h-5 accent-[#26bad4]" onchange="showForm('$850 MXN')">
+                            <span class="font-semibold text-slate-700">Consulta de Valoración</span>
+                        </div>
+                        <span class="text-slate-500 text-sm">Ver precio</span>
+                    </label>
+                </div>
+
+                <div id="bookingForm" class="hidden bg-cyan-50 p-6 rounded-xl border border-cyan-100">
+                    <div class="flex justify-between items-center mb-6">
+                        <span class="text-slate-600 font-medium">Costo del procedimiento:</span>
+                        <span id="servicePrice" class="text-2xl font-bold text-pineda-navy"></span>
+                    </div>
+                    
+                    <form onsubmit="event.preventDefault(); alert('Solicitud enviada al panel del dentista.'); toggleModal('dentistModal');">
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-slate-700 mb-1">Nombre completo</label>
+                                <input type="text" required class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-[#26bad4] focus:border-[#26bad4] outline-none">
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-slate-700 mb-1">WhatsApp</label>
+                                    <input type="tel" required class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-[#26bad4] focus:border-[#26bad4] outline-none">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-slate-700 mb-1">Correo electrónico</label>
+                                    <input type="email" required class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-[#26bad4] focus:border-[#26bad4] outline-none">
+                                </div>
+                            </div>
+                            <button type="submit" class="w-full bg-pineda-cyan hover:bg-[#1fa1b8] text-white font-bold py-3 px-4 rounded-lg transition-colors mt-4 shadow-md">
+                                Solicitar Cita
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: LOG IN -->
+    <div id="loginModal" class="modal hidden fixed inset-0 bg-slate-900 bg-opacity-60 z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden">
+            <div class="px-6 py-4 flex justify-end">
+                <button onclick="toggleModal('loginModal')" class="text-slate-400 hover:text-pineda-cyan text-2xl leading-none">&times;</button>
+            </div>
+            <div class="px-8 pb-8">
+                <div class="text-center mb-8 flex flex-col items-center">
+                    <img src="image_a55d46.jpg" alt="Logo Consultorio Pineda" class="h-16 mb-4 object-contain">
+                    <h2 class="text-2xl font-bold text-pineda-navy">Acceso a Personal</h2>
+                    <p class="text-slate-500 text-sm mt-1">Dentistas y Super Administrador</p>
+                </div>
+                
+                <form onsubmit="event.preventDefault(); window.location.href = 'admin.html';">
+                    <div class="space-y-5">
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Usuario / Correo</label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <i class="fa-solid fa-envelope text-slate-400"></i>
+                                </div>
+                                <input type="email" required class="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-[#26bad4] outline-none">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Contraseña</label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <i class="fa-solid fa-lock text-slate-400"></i>
+                                </div>
+                                <input type="password" required class="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-[#26bad4] outline-none">
+                            </div>
+                        </div>
+                        <button type="submit" class="w-full bg-pineda-navy hover:bg-[#122543] text-white font-bold py-3 px-4 rounded-lg transition-colors mt-2 shadow-md">
+                            Ingresar al Sistema
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleModal(modalID) {
+            const modal = document.getElementById(modalID);
+            modal.classList.toggle('hidden');
+            if (modalID === 'dentistModal' && modal.classList.contains('hidden')) {
+                document.getElementById('bookingForm').classList.add('hidden');
+                document.querySelectorAll('input[name="servicio"]').forEach(radio => radio.checked = false);
+            }
+        }
+        function openDentistModal(name, specialty) {
+            document.getElementById('modalDentistName').innerText = name;
+            document.getElementById('modalDentistSpec').innerText = specialty;
+            toggleModal('dentistModal');
+        }
+        function showForm(price) {
+            document.getElementById('servicePrice').innerText = price;
+            document.getElementById('bookingForm').classList.remove('hidden');
+            document.getElementById('bookingForm').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+    </script>
+</body>
+</html>
