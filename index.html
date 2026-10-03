@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Consultorio Pineda | Gestión Dental Profesional</title>
-    <link rel="icon" type="image/png" href="favicon.png?v=4">
+    <link rel="icon" type="image/png" href="favicon.png?v=5">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -25,7 +25,7 @@
                 <div class="flex-shrink-0 flex items-center gap-2">
                     <img src="image_a55d46.jpg.png" alt="Logo Consultorio Pineda" class="h-14 w-auto object-contain">
                 </div>
-                <button onclick="toggleModal('loginModal')" class="text-pineda-navy hover:text-pineda-cyan font-semibold px-4 py-2 rounded-md transition-colors flex items-center gap-2">
+                <button onclick="window.toggleModal('loginModal')" class="text-pineda-navy hover:text-pineda-cyan font-semibold px-4 py-2 rounded-md transition-colors flex items-center gap-2">
                     <i class="fa-solid fa-user-lock"></i> Acceso Personal
                 </button>
             </div>
@@ -40,7 +40,7 @@
 
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div id="contenedorDentistas" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            <!-- Tarjetas generadas dinámicamente -->
+            <!-- Tarjetas generadas dinámicamente desde la nube -->
         </div>
     </main>
 
@@ -49,16 +49,14 @@
         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
             <div class="sticky top-0 bg-white border-b border-slate-100 px-6 py-4 flex justify-between items-center z-10">
                 <h2 id="modalDentistName" class="text-2xl font-bold text-pineda-navy">Nombre Dentista</h2>
-                <button onclick="toggleModal('dentistModal')" class="text-slate-400 hover:text-pineda-cyan text-2xl leading-none">&times;</button>
+                <button onclick="window.toggleModal('dentistModal')" class="text-slate-400 hover:text-pineda-cyan text-2xl leading-none">&times;</button>
             </div>
             
             <div class="p-6">
                 <p id="modalDentistSpec" class="text-pineda-cyan font-medium mb-6">Especialidad</p>
                 <h3 class="text-lg font-bold mb-4 text-slate-700">Selecciona un servicio:</h3>
                 
-                <div class="space-y-4 mb-8" id="listaServiciosModal">
-                    <!-- Servicios inyectados aquí -->
-                </div>
+                <div class="space-y-4 mb-8" id="listaServiciosModal"></div>
 
                 <div id="bookingForm" class="hidden bg-cyan-50 p-6 rounded-xl border border-cyan-100 mt-6">
                     <div class="flex justify-between items-center mb-6">
@@ -66,7 +64,7 @@
                         <span id="servicePrice" class="text-2xl font-bold text-pineda-navy"></span>
                     </div>
                     
-                    <form onsubmit="solicitarCita(event)">
+                    <form onsubmit="window.solicitarCita(event)">
                         <div class="space-y-4">
                             <div>
                                 <label class="block text-sm font-medium text-slate-700 mb-1">Tu Nombre completo</label>
@@ -82,7 +80,7 @@
                                     <input type="email" id="citaCorreo" class="w-full px-4 py-2 border border-slate-300 rounded-lg outline-none focus:border-[#26bad4]">
                                 </div>
                             </div>
-                            <button type="submit" class="w-full bg-pineda-cyan hover:bg-[#1fa1b8] text-white font-bold py-3 px-4 rounded-lg transition-colors shadow-md mt-4">
+                            <button type="submit" id="btnSolicitar" class="w-full bg-pineda-cyan hover:bg-[#1fa1b8] text-white font-bold py-3 px-4 rounded-lg transition-colors shadow-md mt-4">
                                 Enviar Solicitud de Cita
                             </button>
                         </div>
@@ -96,7 +94,7 @@
     <div id="loginModal" class="modal hidden fixed inset-0 bg-slate-900 bg-opacity-60 z-50 flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden">
             <div class="px-6 py-4 flex justify-end">
-                <button onclick="toggleModal('loginModal')" class="text-slate-400 hover:text-pineda-cyan text-2xl leading-none">&times;</button>
+                <button onclick="window.toggleModal('loginModal')" class="text-slate-400 hover:text-pineda-cyan text-2xl leading-none">&times;</button>
             </div>
             <div class="px-8 pb-8">
                 <div class="text-center mb-8 flex flex-col items-center">
@@ -104,7 +102,7 @@
                     <h2 class="text-2xl font-bold text-pineda-navy">Acceso a Personal</h2>
                 </div>
                 
-                <form onsubmit="validarLogin(event)">
+                <form onsubmit="window.validarLogin(event)">
                     <div class="space-y-5">
                         <div>
                             <label class="block text-sm font-medium text-slate-700 mb-1">Usuario / Correo</label>
@@ -114,7 +112,7 @@
                             <label class="block text-sm font-medium text-slate-700 mb-1">Contraseña</label>
                             <input type="password" id="password" required class="w-full px-4 py-2 border border-slate-300 rounded-lg outline-none focus:border-[#26bad4]">
                         </div>
-                        <button type="submit" class="w-full bg-pineda-navy hover:bg-[#122543] text-white font-bold py-3 px-4 rounded-lg shadow-md mt-2">
+                        <button type="submit" id="btnIngresar" class="w-full bg-pineda-navy hover:bg-[#122543] text-white font-bold py-3 px-4 rounded-lg shadow-md mt-2">
                             Ingresar
                         </button>
                     </div>
@@ -123,44 +121,76 @@
         </div>
     </div>
 
-    <script>
-        let dentistaSeleccionadoIndex = null;
+    <!-- SCRIPT DE FIREBASE -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
+        import { getFirestore, collection, getDocs, doc, updateDoc, query, where } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-firestore.js";
 
-        function cargarDentistasPublicos() {
-            const dentistas = JSON.parse(localStorage.getItem('dentistas_pineda')) || [];
+        const firebaseConfig = {
+            apiKey: "AIzaSyCSvx5Ra5FMtOyfGQCLMUwthGnLXiQE5Ts",
+            authDomain: "pineda-consultorios.firebaseapp.com",
+            projectId: "pineda-consultorios",
+            storageBucket: "pineda-consultorios.firebasestorage.app",
+            messagingSenderId: "867106565273",
+            appId: "1:867106565273:web:a9d98a7a36b522cbd7dc08"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        window.listaDentistas = [];
+        window.dentistaSeleccionadoIndex = null;
+
+        window.cargarDentistasPublicos = async function() {
             const contenedor = document.getElementById('contenedorDentistas');
-            contenedor.innerHTML = '';
+            contenedor.innerHTML = '<p class="text-slate-500 col-span-full text-center"><i class="fa-solid fa-spinner fa-spin mr-2"></i> Cargando especialistas...</p>';
 
-            if (dentistas.length === 0) {
-                contenedor.innerHTML = '<p class="text-slate-500 col-span-full text-center">No hay dentistas registrados aún.</p>';
-                return;
+            try {
+                const querySnapshot = await getDocs(collection(db, "dentistas"));
+                window.listaDentistas = [];
+                contenedor.innerHTML = '';
+
+                if (querySnapshot.empty) {
+                    contenedor.innerHTML = '<p class="text-slate-500 col-span-full text-center">Aún no hay dentistas registrados.</p>';
+                    return;
+                }
+
+                querySnapshot.forEach((documento) => {
+                    let datos = documento.data();
+                    datos.id = documento.id; // Guardar el ID único de la nube
+                    window.listaDentistas.push(datos);
+                });
+
+                // Renderizar las tarjetas
+                window.listaDentistas.forEach((dentista, index) => {
+                    let visualPerfil = dentista.fotoPerfil 
+                        ? `<img src="${dentista.fotoPerfil}" class="w-full h-64 object-cover object-top group-hover:scale-105 transition-transform duration-300">`
+                        : `<div class="w-full h-64 bg-slate-200 flex items-center justify-center"><i class="fa-solid fa-user-doctor text-6xl text-slate-400 group-hover:scale-110 transition-transform duration-300"></i></div>`;
+
+                    const card = document.createElement('div');
+                    card.className = "bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden hover:shadow-lg transition-shadow cursor-pointer group flex flex-col";
+                    card.onclick = () => window.openDentistModal(index);
+
+                    card.innerHTML = `
+                        <div class="w-full h-64 overflow-hidden relative">
+                            ${visualPerfil}
+                        </div>
+                        <div class="p-6 text-center flex-1">
+                            <h3 class="text-xl font-bold text-pineda-navy">${dentista.nombre}</h3>
+                            <p class="text-pineda-cyan font-medium mb-4">${dentista.especialidad}</p>
+                            <span class="inline-block bg-cyan-50 text-pineda-cyan rounded-full px-4 py-2 text-sm font-semibold border border-cyan-100">Ver servicios y agendar</span>
+                        </div>
+                    `;
+                    contenedor.appendChild(card);
+                });
+
+            } catch (error) {
+                console.error(error);
+                contenedor.innerHTML = '<p class="text-red-500 col-span-full text-center">Error al conectar con la clínica.</p>';
             }
+        };
 
-            dentistas.forEach((dentista, index) => {
-                // Diseño limpio: La imagen abarca todo el cuadro de arriba sin márgenes
-                let visualPerfil = dentista.fotoPerfil 
-                    ? `<img src="${dentista.fotoPerfil}" class="w-full h-64 object-cover object-top group-hover:scale-105 transition-transform duration-300">`
-                    : `<div class="w-full h-64 bg-slate-200 flex items-center justify-center"><i class="fa-solid fa-user-doctor text-6xl text-slate-400 group-hover:scale-110 transition-transform duration-300"></i></div>`;
-
-                const card = document.createElement('div');
-                card.className = "bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden hover:shadow-lg transition-shadow cursor-pointer group flex flex-col";
-                card.onclick = () => openDentistModal(index);
-
-                card.innerHTML = `
-                    <div class="w-full h-64 overflow-hidden relative">
-                        ${visualPerfil}
-                    </div>
-                    <div class="p-6 text-center flex-1">
-                        <h3 class="text-xl font-bold text-pineda-navy">${dentista.nombre}</h3>
-                        <p class="text-pineda-cyan font-medium mb-4">${dentista.especialidad}</p>
-                        <span class="inline-block bg-cyan-50 text-pineda-cyan rounded-full px-4 py-2 text-sm font-semibold border border-cyan-100">Ver servicios y agendar</span>
-                    </div>
-                `;
-                contenedor.appendChild(card);
-            });
-        }
-
-        function toggleModal(modalID) {
+        window.toggleModal = function(modalID) {
             const modal = document.getElementById(modalID);
             modal.classList.toggle('hidden');
             if (modalID === 'dentistModal' && modal.classList.contains('hidden')) {
@@ -170,12 +200,11 @@
                 document.getElementById('username').value = '';
                 document.getElementById('password').value = '';
             }
-        }
+        };
         
-        function openDentistModal(index) {
-            dentistaSeleccionadoIndex = index;
-            const dentistas = JSON.parse(localStorage.getItem('dentistas_pineda')) || [];
-            const dentista = dentistas[index];
+        window.openDentistModal = function(index) {
+            window.dentistaSeleccionadoIndex = index;
+            const dentista = window.listaDentistas[index];
             
             document.getElementById('modalDentistName').innerText = dentista.nombre;
             document.getElementById('modalDentistSpec').innerText = dentista.especialidad;
@@ -200,7 +229,7 @@
                         <div class="border border-slate-200 rounded-xl p-5 hover:bg-slate-50 transition-colors">
                             <label class="flex justify-between items-center cursor-pointer w-full">
                                 <div class="flex items-center gap-3">
-                                    <input type="radio" name="servicio" data-nombre="${serv.nombre}" class="w-5 h-5 accent-[#26bad4]" onchange="showForm('${serv.precio}')">
+                                    <input type="radio" name="servicio" data-nombre="${serv.nombre}" class="w-5 h-5 accent-[#26bad4]" onchange="window.showForm('${serv.precio}')">
                                     <span class="font-bold text-slate-700 text-lg">${serv.nombre}</span>
                                 </div>
                                 <span class="text-pineda-navy font-black text-lg">$${serv.precio}</span>
@@ -210,17 +239,21 @@
                     `;
                 });
             }
-            toggleModal('dentistModal');
-        }
+            window.toggleModal('dentistModal');
+        };
         
-        function showForm(price) {
+        window.showForm = function(price) {
             document.getElementById('servicePrice').innerText = "$" + price + " MXN";
             document.getElementById('bookingForm').classList.remove('hidden');
             document.getElementById('bookingForm').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-        }
+        };
 
-        function solicitarCita(event) {
+        window.solicitarCita = async function(event) {
             event.preventDefault();
+            const btn = document.getElementById('btnSolicitar');
+            btn.innerText = "Enviando...";
+            btn.disabled = true;
+
             const nombre = document.getElementById('citaNombre').value;
             const whatsapp = document.getElementById('citaWhatsapp').value;
             const correo = document.getElementById('citaCorreo').value;
@@ -228,19 +261,16 @@
             const servicioRadio = document.querySelector('input[name="servicio"]:checked');
             if(!servicioRadio) {
                 alert("Por favor selecciona un servicio.");
+                btn.innerText = "Enviar Solicitud de Cita";
+                btn.disabled = false;
                 return;
             }
             const servicioNombre = servicioRadio.getAttribute('data-nombre');
+            const dentista = window.listaDentistas[window.dentistaSeleccionadoIndex];
 
-            let dentistas = JSON.parse(localStorage.getItem('dentistas_pineda')) || [];
-            let dentista = dentistas[dentistaSeleccionadoIndex];
-
-            // Aseguramos que existan los arrays en la memoria de este doctor
-            if(!dentista.solicitudes) dentista.solicitudes = [];
-            if(!dentista.citas) dentista.citas = [];
-
-            // Guardamos la solicitud
-            dentista.solicitudes.push({
+            // Preparamos la solicitud
+            let solicitudesActuales = dentista.solicitudes || [];
+            solicitudesActuales.push({
                 id: Date.now(),
                 paciente: nombre,
                 whatsapp: whatsapp,
@@ -249,37 +279,65 @@
                 fechaCreacion: new Date().toLocaleDateString('es-MX')
             });
 
-            localStorage.setItem('dentistas_pineda', JSON.stringify(dentistas));
-            
-            alert('¡Solicitud enviada exitosamente! El doctor la verá en su panel para asignarte una fecha.');
-            document.getElementById('citaNombre').value = '';
-            document.getElementById('citaWhatsapp').value = '';
-            document.getElementById('citaCorreo').value = '';
-            toggleModal('dentistModal');
-        }
+            try {
+                // Actualizamos directo en la base de datos de Firebase
+                await updateDoc(doc(db, "dentistas", dentista.id), {
+                    solicitudes: solicitudesActuales
+                });
+                alert('¡Solicitud enviada exitosamente! El doctor la verá en su panel para asignarte una fecha.');
+                document.getElementById('citaNombre').value = '';
+                document.getElementById('citaWhatsapp').value = '';
+                document.getElementById('citaCorreo').value = '';
+                window.toggleModal('dentistModal');
+            } catch(e) {
+                console.error(e);
+                alert("Hubo un error al enviar tu solicitud. Intenta de nuevo.");
+            }
 
-        function validarLogin(event) {
+            btn.innerText = "Enviar Solicitud de Cita";
+            btn.disabled = false;
+        };
+
+        window.validarLogin = async function(event) {
             event.preventDefault();
+            const btn = document.getElementById('btnIngresar');
+            btn.innerText = "Verificando...";
+            btn.disabled = true;
+
             const user = document.getElementById('username').value.trim();
             const pass = document.getElementById('password').value;
 
+            // Validación de Super Administrador
             if ((user === 'mario.ortiz' && pass === '12345678') || (user === 'kevin.pineda' && pass === '12345678')) {
                 window.location.href = 'admin.html';
                 return;
             }
 
-            const dentistas = JSON.parse(localStorage.getItem('dentistas_pineda')) || [];
-            const dentistaEncontrado = dentistas.find(d => d.correo === user && d.password === pass);
+            // Búsqueda en la nube (Firestore) para dentistas
+            try {
+                const q = query(collection(db, "dentistas"), where("correo", "==", user), where("password", "==", pass));
+                const querySnapshot = await getDocs(q);
 
-            if (dentistaEncontrado) {
-                sessionStorage.setItem('dentistaLogueado', JSON.stringify(dentistaEncontrado));
-                window.location.href = 'panel_dentista.html';
-            } else {
-                alert('Usuario o contraseña incorrectos.');
+                if (!querySnapshot.empty) {
+                    // Extraemos el ID del documento en Firestore
+                    const docId = querySnapshot.docs[0].id;
+                    sessionStorage.setItem('dentistaId', docId); // Lo guardamos temporalmente para la sesión
+                    window.location.href = 'panel_dentista.html';
+                } else {
+                    alert('Usuario o contraseña incorrectos.');
+                    btn.innerText = "Ingresar";
+                    btn.disabled = false;
+                }
+            } catch(e) {
+                console.error(e);
+                alert("Error de conexión al iniciar sesión.");
+                btn.innerText = "Ingresar";
+                btn.disabled = false;
             }
-        }
+        };
 
-        document.addEventListener('DOMContentLoaded', cargarDentistasPublicos);
+        // Arrancar
+        document.addEventListener('DOMContentLoaded', window.cargarDentistasPublicos);
     </script>
 </body>
 </html>
