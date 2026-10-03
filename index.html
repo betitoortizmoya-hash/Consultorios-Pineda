@@ -4,8 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Consultorio Pineda | Gestión Dental Profesional</title>
-    <!-- El parámetro ?v=2 fuerza al navegador a cargar el nuevo ícono -->
-    <link rel="icon" type="image/png" href="favicon.png?v=2">
+    <link rel="icon" type="image/png" href="favicon.png?v=3">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -38,12 +37,12 @@
     </header>
 
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <!-- El contenedor está vacío, JavaScript inyectará las tarjetas aquí -->
         <div id="contenedorDentistas" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Tarjetas generadas dinámicamente -->
         </div>
     </main>
 
-    <!-- MODAL: SERVICIOS Y CAPTURA DE DATOS -->
+    <!-- MODAL DE SERVICIOS PÚBLICOS -->
     <div id="dentistModal" class="modal hidden fixed inset-0 bg-slate-900 bg-opacity-60 z-50 flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
             <div class="sticky top-0 bg-white border-b border-slate-100 px-6 py-4 flex justify-between items-center z-10">
@@ -55,33 +54,33 @@
                 <p id="modalDentistSpec" class="text-pineda-cyan font-medium mb-6">Especialidad</p>
                 <h3 class="text-lg font-bold mb-4 text-slate-700">Selecciona un servicio:</h3>
                 
-                <div class="space-y-3 mb-8" id="listaServiciosModal">
-                    <!-- Los servicios se cargarán dinámicamente -->
+                <div class="space-y-4 mb-8" id="listaServiciosModal">
+                    <!-- Servicios y galerías inyectados aquí -->
                 </div>
 
-                <div id="bookingForm" class="hidden bg-cyan-50 p-6 rounded-xl border border-cyan-100">
+                <div id="bookingForm" class="hidden bg-cyan-50 p-6 rounded-xl border border-cyan-100 mt-6">
                     <div class="flex justify-between items-center mb-6">
-                        <span class="text-slate-600 font-medium">Costo del procedimiento:</span>
+                        <span class="text-slate-600 font-medium">Costo estimado:</span>
                         <span id="servicePrice" class="text-2xl font-bold text-pineda-navy"></span>
                     </div>
                     
-                    <form onsubmit="event.preventDefault(); alert('Solicitud enviada al panel del dentista.'); toggleModal('dentistModal');">
+                    <form onsubmit="event.preventDefault(); alert('Solicitud de cita enviada.'); toggleModal('dentistModal');">
                         <div class="space-y-4">
                             <div>
-                                <label class="block text-sm font-medium text-slate-700 mb-1">Nombre completo</label>
-                                <input type="text" required class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-[#26bad4] focus:border-[#26bad4] outline-none">
+                                <label class="block text-sm font-medium text-slate-700 mb-1">Tu Nombre completo</label>
+                                <input type="text" required class="w-full px-4 py-2 border border-slate-300 rounded-lg outline-none focus:border-[#26bad4]">
                             </div>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
-                                    <label class="block text-sm font-medium text-slate-700 mb-1">WhatsApp</label>
-                                    <input type="tel" required class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-[#26bad4] focus:border-[#26bad4] outline-none">
+                                    <label class="block text-sm font-medium text-slate-700 mb-1">Tu WhatsApp</label>
+                                    <input type="tel" required class="w-full px-4 py-2 border border-slate-300 rounded-lg outline-none focus:border-[#26bad4]">
                                 </div>
                                 <div>
                                     <label class="block text-sm font-medium text-slate-700 mb-1">Correo electrónico</label>
-                                    <input type="email" required class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-[#26bad4] focus:border-[#26bad4] outline-none">
+                                    <input type="email" required class="w-full px-4 py-2 border border-slate-300 rounded-lg outline-none focus:border-[#26bad4]">
                                 </div>
                             </div>
-                            <button type="submit" class="w-full bg-pineda-cyan hover:bg-[#1fa1b8] text-white font-bold py-3 px-4 rounded-lg transition-colors mt-4 shadow-md">
+                            <button type="submit" class="w-full bg-pineda-cyan hover:bg-[#1fa1b8] text-white font-bold py-3 px-4 rounded-lg transition-colors shadow-md mt-4">
                                 Solicitar Cita
                             </button>
                         </div>
@@ -99,33 +98,22 @@
             </div>
             <div class="px-8 pb-8">
                 <div class="text-center mb-8 flex flex-col items-center">
-                    <img src="image_a55d46.jpg.png" alt="Logo Consultorio Pineda" class="h-16 mb-4 object-contain">
+                    <img src="image_a55d46.jpg.png" alt="Logo" class="h-16 mb-4 object-contain">
                     <h2 class="text-2xl font-bold text-pineda-navy">Acceso a Personal</h2>
-                    <p class="text-slate-500 text-sm mt-1">Dentistas y Super Administrador</p>
                 </div>
                 
                 <form onsubmit="validarLogin(event)">
                     <div class="space-y-5">
                         <div>
                             <label class="block text-sm font-medium text-slate-700 mb-1">Usuario / Correo</label>
-                            <div class="relative">
-                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                    <i class="fa-solid fa-user text-slate-400"></i>
-                                </div>
-                                <input type="text" id="username" required class="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-[#26bad4] outline-none" placeholder="Ej. mario.ortiz">
-                            </div>
+                            <input type="text" id="username" required class="w-full px-4 py-2 border border-slate-300 rounded-lg outline-none focus:border-[#26bad4]" placeholder="Ej. mario.ortiz">
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-slate-700 mb-1">Contraseña</label>
-                            <div class="relative">
-                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                    <i class="fa-solid fa-lock text-slate-400"></i>
-                                </div>
-                                <input type="password" id="password" required class="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-[#26bad4] outline-none">
-                            </div>
+                            <input type="password" id="password" required class="w-full px-4 py-2 border border-slate-300 rounded-lg outline-none focus:border-[#26bad4]">
                         </div>
-                        <button type="submit" class="w-full bg-pineda-navy hover:bg-[#122543] text-white font-bold py-3 px-4 rounded-lg transition-colors mt-2 shadow-md">
-                            Ingresar al Sistema
+                        <button type="submit" class="w-full bg-pineda-navy hover:bg-[#122543] text-white font-bold py-3 px-4 rounded-lg shadow-md mt-2">
+                            Ingresar
                         </button>
                     </div>
                 </form>
@@ -134,7 +122,6 @@
     </div>
 
     <script>
-        // Cargar dentistas desde el almacenamiento local
         function cargarDentistasPublicos() {
             const dentistas = JSON.parse(localStorage.getItem('dentistas_pineda')) || [];
             const contenedor = document.getElementById('contenedorDentistas');
@@ -146,13 +133,18 @@
             }
 
             dentistas.forEach((dentista, index) => {
+                // Validación para ver si hay foto de perfil o usar el ícono genérico
+                let visualPerfil = dentista.fotoPerfil 
+                    ? `<img src="${dentista.fotoPerfil}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">`
+                    : `<i class="fa-solid fa-user-doctor text-6xl text-slate-400 group-hover:scale-110 transition-transform duration-300"></i>`;
+
                 const card = document.createElement('div');
                 card.className = "bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden hover:shadow-lg transition-shadow cursor-pointer group";
                 card.onclick = () => openDentistModal(index);
 
                 card.innerHTML = `
-                    <div class="h-48 bg-slate-200 overflow-hidden flex items-center justify-center">
-                        <i class="fa-solid fa-user-doctor text-6xl text-slate-400 group-hover:scale-110 transition-transform duration-300"></i>
+                    <div class="h-48 bg-slate-200 overflow-hidden flex items-center justify-center relative">
+                        ${visualPerfil}
                     </div>
                     <div class="p-6 text-center">
                         <h3 class="text-xl font-bold text-pineda-navy">${dentista.nombre}</h3>
@@ -184,22 +176,36 @@
             document.getElementById('modalDentistSpec').innerText = dentista.especialidad;
             
             const listaServicios = document.getElementById('listaServiciosModal');
-            listaServicios.innerHTML = `
-                <label class="flex justify-between items-center p-4 border border-slate-200 rounded-xl cursor-pointer hover:bg-slate-50 transition-colors">
-                    <div class="flex items-center gap-3">
-                        <input type="radio" name="servicio" class="w-5 h-5 accent-[#26bad4]" onchange="showForm('${dentista.servicio1Precio}')">
-                        <span class="font-semibold text-slate-700">${dentista.servicio1Nombre}</span>
-                    </div>
-                    <span class="text-slate-500 text-sm">Ver precio</span>
-                </label>
-                <label class="flex justify-between items-center p-4 border border-slate-200 rounded-xl cursor-pointer hover:bg-slate-50 transition-colors">
-                    <div class="flex items-center gap-3">
-                        <input type="radio" name="servicio" class="w-5 h-5 accent-[#26bad4]" onchange="showForm('${dentista.servicio2Precio}')">
-                        <span class="font-semibold text-slate-700">${dentista.servicio2Nombre}</span>
-                    </div>
-                    <span class="text-slate-500 text-sm">Ver precio</span>
-                </label>
-            `;
+            listaServicios.innerHTML = '';
+
+            if(!dentista.servicios || dentista.servicios.length === 0) {
+                listaServicios.innerHTML = '<p class="text-slate-500">Este profesional aún no ha listado sus servicios.</p>';
+            } else {
+                dentista.servicios.forEach(serv => {
+                    // Si el servicio tiene fotos de trabajos, las mostramos como galería miniatura
+                    let galeria = '';
+                    if(serv.fotos && serv.fotos.length > 0) {
+                        galeria = `<div class="flex gap-2 mt-3 overflow-x-auto pb-2 pl-8">`;
+                        serv.fotos.forEach(foto => {
+                            galeria += `<img src="${foto}" class="w-16 h-16 rounded object-cover border border-slate-200 shadow-sm flex-shrink-0">`;
+                        });
+                        galeria += `</div>`;
+                    }
+
+                    listaServicios.innerHTML += `
+                        <div class="border border-slate-200 rounded-xl p-4 hover:bg-slate-50 transition-colors">
+                            <label class="flex justify-between items-center cursor-pointer w-full">
+                                <div class="flex items-center gap-3">
+                                    <input type="radio" name="servicio" class="w-5 h-5 accent-[#26bad4]" onchange="showForm('${serv.precio}')">
+                                    <span class="font-semibold text-slate-700">${serv.nombre}</span>
+                                </div>
+                                <span class="text-slate-500 font-bold">$${serv.precio}</span>
+                            </label>
+                            ${galeria}
+                        </div>
+                    `;
+                });
+            }
             
             toggleModal('dentistModal');
         }
@@ -215,18 +221,15 @@
             const user = document.getElementById('username').value.trim();
             const pass = document.getElementById('password').value;
 
-            // Validación Super Admin
             if ((user === 'mario.ortiz' && pass === '12345678') || (user === 'kevin.pineda' && pass === '12345678')) {
                 window.location.href = 'admin.html';
                 return;
             }
 
-            // Validación Dentistas
             const dentistas = JSON.parse(localStorage.getItem('dentistas_pineda')) || [];
             const dentistaEncontrado = dentistas.find(d => d.correo === user && d.password === pass);
 
             if (dentistaEncontrado) {
-                // Guardamos quién inició sesión temporalmente
                 sessionStorage.setItem('dentistaLogueado', JSON.stringify(dentistaEncontrado));
                 window.location.href = 'panel_dentista.html';
             } else {
@@ -234,7 +237,6 @@
             }
         }
 
-        // Cargar al iniciar la página
         document.addEventListener('DOMContentLoaded', cargarDentistasPublicos);
     </script>
 </body>
