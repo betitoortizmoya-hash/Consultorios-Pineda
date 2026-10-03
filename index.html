@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Consultorio Pineda | Gestión Dental Profesional</title>
-    <link rel="icon" type="image/png" href="favicon.png?v=3">
+    <link rel="icon" type="image/png" href="favicon.png?v=4">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -13,7 +13,6 @@
         .text-pineda-cyan { color: #26bad4; }
         .bg-pineda-navy { background-color: #1b365d; }
         .text-pineda-navy { color: #1b365d; }
-        /* Mejora el scroll de la galería de fotos */
         .scrollbar-hide::-webkit-scrollbar { display: none; }
         .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
@@ -58,7 +57,7 @@
                 <h3 class="text-lg font-bold mb-4 text-slate-700">Selecciona un servicio:</h3>
                 
                 <div class="space-y-4 mb-8" id="listaServiciosModal">
-                    <!-- Servicios y galerías inyectados aquí -->
+                    <!-- Servicios inyectados aquí -->
                 </div>
 
                 <div id="bookingForm" class="hidden bg-cyan-50 p-6 rounded-xl border border-cyan-100 mt-6">
@@ -67,25 +66,24 @@
                         <span id="servicePrice" class="text-2xl font-bold text-pineda-navy"></span>
                     </div>
                     
-                    <form onsubmit="event.preventDefault(); alert('Solicitud de cita enviada.'); toggleModal('dentistModal');">
+                    <form onsubmit="solicitarCita(event)">
                         <div class="space-y-4">
                             <div>
                                 <label class="block text-sm font-medium text-slate-700 mb-1">Tu Nombre completo</label>
-                                <input type="text" required class="w-full px-4 py-2 border border-slate-300 rounded-lg outline-none focus:border-[#26bad4]">
+                                <input type="text" id="citaNombre" required class="w-full px-4 py-2 border border-slate-300 rounded-lg outline-none focus:border-[#26bad4]">
                             </div>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
                                     <label class="block text-sm font-medium text-slate-700 mb-1">Tu WhatsApp</label>
-                                    <input type="tel" required class="w-full px-4 py-2 border border-slate-300 rounded-lg outline-none focus:border-[#26bad4]">
+                                    <input type="tel" id="citaWhatsapp" required class="w-full px-4 py-2 border border-slate-300 rounded-lg outline-none focus:border-[#26bad4]">
                                 </div>
                                 <div>
                                     <label class="block text-sm font-medium text-slate-700 mb-1">Correo electrónico (Opcional)</label>
-                                    <!-- Se eliminó el atributo 'required' de este input -->
-                                    <input type="email" class="w-full px-4 py-2 border border-slate-300 rounded-lg outline-none focus:border-[#26bad4]">
+                                    <input type="email" id="citaCorreo" class="w-full px-4 py-2 border border-slate-300 rounded-lg outline-none focus:border-[#26bad4]">
                                 </div>
                             </div>
                             <button type="submit" class="w-full bg-pineda-cyan hover:bg-[#1fa1b8] text-white font-bold py-3 px-4 rounded-lg transition-colors shadow-md mt-4">
-                                Solicitar Cita
+                                Enviar Solicitud de Cita
                             </button>
                         </div>
                     </form>
@@ -126,6 +124,8 @@
     </div>
 
     <script>
+        let dentistaSeleccionadoIndex = null;
+
         function cargarDentistasPublicos() {
             const dentistas = JSON.parse(localStorage.getItem('dentistas_pineda')) || [];
             const contenedor = document.getElementById('contenedorDentistas');
@@ -137,19 +137,20 @@
             }
 
             dentistas.forEach((dentista, index) => {
+                // Diseño limpio: La imagen abarca todo el cuadro de arriba sin márgenes
                 let visualPerfil = dentista.fotoPerfil 
-                    ? `<img src="${dentista.fotoPerfil}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">`
-                    : `<i class="fa-solid fa-user-doctor text-6xl text-slate-400 group-hover:scale-110 transition-transform duration-300"></i>`;
+                    ? `<img src="${dentista.fotoPerfil}" class="w-full h-64 object-cover object-top group-hover:scale-105 transition-transform duration-300">`
+                    : `<div class="w-full h-64 bg-slate-200 flex items-center justify-center"><i class="fa-solid fa-user-doctor text-6xl text-slate-400 group-hover:scale-110 transition-transform duration-300"></i></div>`;
 
                 const card = document.createElement('div');
-                card.className = "bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden hover:shadow-lg transition-shadow cursor-pointer group";
+                card.className = "bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden hover:shadow-lg transition-shadow cursor-pointer group flex flex-col";
                 card.onclick = () => openDentistModal(index);
 
                 card.innerHTML = `
-                    <div class="h-48 bg-slate-200 overflow-hidden flex items-center justify-center relative">
+                    <div class="w-full h-64 overflow-hidden relative">
                         ${visualPerfil}
                     </div>
-                    <div class="p-6 text-center">
+                    <div class="p-6 text-center flex-1">
                         <h3 class="text-xl font-bold text-pineda-navy">${dentista.nombre}</h3>
                         <p class="text-pineda-cyan font-medium mb-4">${dentista.especialidad}</p>
                         <span class="inline-block bg-cyan-50 text-pineda-cyan rounded-full px-4 py-2 text-sm font-semibold border border-cyan-100">Ver servicios y agendar</span>
@@ -172,6 +173,7 @@
         }
         
         function openDentistModal(index) {
+            dentistaSeleccionadoIndex = index;
             const dentistas = JSON.parse(localStorage.getItem('dentistas_pineda')) || [];
             const dentista = dentistas[index];
             
@@ -185,7 +187,6 @@
                 listaServicios.innerHTML = '<p class="text-slate-500">Este profesional aún no ha listado sus servicios.</p>';
             } else {
                 dentista.servicios.forEach(serv => {
-                    // Generar galería con imágenes más grandes y debajo del título
                     let galeria = '';
                     if(serv.fotos && serv.fotos.length > 0) {
                         galeria = `<div class="flex gap-4 mt-4 overflow-x-auto pb-3 scrollbar-hide w-full">`;
@@ -199,7 +200,7 @@
                         <div class="border border-slate-200 rounded-xl p-5 hover:bg-slate-50 transition-colors">
                             <label class="flex justify-between items-center cursor-pointer w-full">
                                 <div class="flex items-center gap-3">
-                                    <input type="radio" name="servicio" class="w-5 h-5 accent-[#26bad4]" onchange="showForm('${serv.precio}')">
+                                    <input type="radio" name="servicio" data-nombre="${serv.nombre}" class="w-5 h-5 accent-[#26bad4]" onchange="showForm('${serv.precio}')">
                                     <span class="font-bold text-slate-700 text-lg">${serv.nombre}</span>
                                 </div>
                                 <span class="text-pineda-navy font-black text-lg">$${serv.precio}</span>
@@ -209,7 +210,6 @@
                     `;
                 });
             }
-            
             toggleModal('dentistModal');
         }
         
@@ -217,6 +217,45 @@
             document.getElementById('servicePrice').innerText = "$" + price + " MXN";
             document.getElementById('bookingForm').classList.remove('hidden');
             document.getElementById('bookingForm').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        function solicitarCita(event) {
+            event.preventDefault();
+            const nombre = document.getElementById('citaNombre').value;
+            const whatsapp = document.getElementById('citaWhatsapp').value;
+            const correo = document.getElementById('citaCorreo').value;
+            
+            const servicioRadio = document.querySelector('input[name="servicio"]:checked');
+            if(!servicioRadio) {
+                alert("Por favor selecciona un servicio.");
+                return;
+            }
+            const servicioNombre = servicioRadio.getAttribute('data-nombre');
+
+            let dentistas = JSON.parse(localStorage.getItem('dentistas_pineda')) || [];
+            let dentista = dentistas[dentistaSeleccionadoIndex];
+
+            // Aseguramos que existan los arrays en la memoria de este doctor
+            if(!dentista.solicitudes) dentista.solicitudes = [];
+            if(!dentista.citas) dentista.citas = [];
+
+            // Guardamos la solicitud
+            dentista.solicitudes.push({
+                id: Date.now(),
+                paciente: nombre,
+                whatsapp: whatsapp,
+                correo: correo,
+                servicio: servicioNombre,
+                fechaCreacion: new Date().toLocaleDateString('es-MX')
+            });
+
+            localStorage.setItem('dentistas_pineda', JSON.stringify(dentistas));
+            
+            alert('¡Solicitud enviada exitosamente! El doctor la verá en su panel para asignarte una fecha.');
+            document.getElementById('citaNombre').value = '';
+            document.getElementById('citaWhatsapp').value = '';
+            document.getElementById('citaCorreo').value = '';
+            toggleModal('dentistModal');
         }
 
         function validarLogin(event) {
